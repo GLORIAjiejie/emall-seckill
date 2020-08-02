@@ -11,19 +11,11 @@
 package com.cwu.emallseckill.param;
 
 
-import com.alibaba.druid.util.StringUtils;
 import com.cwu.emallseckill.validator.IsMobile;
 
 import javax.validation.constraints.NotNull;
 
-/**
- * 〈一句话功能简述〉<br> 
- * 〈〉
- *
- * @author min
- * @create 2020-08-02
- * @since 1.0.0
- */
+
 public class LoginParam {
 
     @NotNull(message="手机号不能为空")
