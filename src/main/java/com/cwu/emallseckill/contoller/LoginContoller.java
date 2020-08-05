@@ -10,8 +10,11 @@
  */
 package com.cwu.emallseckill.contoller;
 
+import com.cwu.emallseckill.consts.Const;
 import com.cwu.emallseckill.entity.User;
 import com.cwu.emallseckill.param.LoginParam;
+import com.cwu.emallseckill.redis.RedisServer;
+import com.cwu.emallseckill.redis.UserKey;
 import com.cwu.emallseckill.result.Result;
 import com.cwu.emallseckill.service.IUserService;
 import com.cwu.emallseckill.util.CookieUtil;
@@ -37,6 +40,9 @@ import javax.validation.Valid;
 public class LoginContoller {
 
     @Autowired
+    private RedisServer redisServer;
+
+    @Autowired
     private IUserService userService;
 
     @RequestMapping("/login")
@@ -45,6 +51,8 @@ public class LoginContoller {
         Result login=this.userService.login(param);
         if (login.isSuccess()){
             CookieUtil.writenLoginToken(response,request.getSession().getId());
+            this.redisServer.set(UserKey.getByName,request.getSession().getId(),login.getData(),
+                    Const.RedisCacheExtime.REDIS_SESSION_EXTIME);
         }
         return login;
     }
@@ -54,6 +62,7 @@ public class LoginContoller {
     public String logout(HttpServletRequest request,HttpServletResponse response){
         String token=CookieUtil.readLoginToken(request);
         CookieUtil.delLoginToken(request,response);
+        this.redisServer.del(UserKey.getByName,token);
         return "login";
     }
 }
