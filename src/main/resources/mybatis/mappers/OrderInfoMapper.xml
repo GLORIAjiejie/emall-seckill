@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cwu.emallseckill.dao.OrderInfoMapper">
+    <resultMap id="baseResultMap" type="com.cwu.emallseckill.entity.OrderInfo">
+        <constructor>
+            <idArg column="id" jdbcType="BIGINT" javaType="java.lang.Long"/>
+            <arg column="user_id" jdbcType="BIGINT" javaType="java.lang.Long"/>
+            <arg column="goods_id" jdbcType="BIGINT" javaType="java.lang.Long"/>
+            <arg column="addr_id" jdbcType="BIGINT" javaType="java.lang.Long"/>
+            <arg column="goods_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="goods_count" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="goods_price" jdbcType="DECIMAL" javaType="java.math.BigDecimal"/>
+            <arg column="order_channel" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="status" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="create_date" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+            <arg column="pay_date" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        </constructor>
+    </resultMap>
+
+    <sql id="base_column_list">
+        id,user_id,goods_id,addr_id,goods_name,goods_count,goods_price,order_channel,status,create_date,pay_date
+    </sql>
+
+    <insert id="insert">
+        INSERT INTO
+            order_info(user_id,goods_id,addr_id,goods_name,goods_count,goods_price,order_channel,status,create_date,pay_date)
+        VALUES(
+            #{record.user_id,jdbcType=BIGINT},
+            #{record.goods_id,jdbcType=BIGINT},
+            #{record.addr_id,jdbcType=BIGINT},
+            #{record.goods_name,jdbcType=VARCHAR},
+            #{record.goods_count,jdbcType=INTEGER},
+            #{record.goods_price,jdbcType=DECIMAL},
+            #{record.order_channel,jdbcType=INTEGER},
+            #{record.status,jdbcType=INTEGER},
+            #{record.create_date,jdbcType=TIMESTAMP},
+            #{record.pay_date,jdbcType=TIMESTAMP}
+        )
+    </insert>
+
+    <select id="selectByPrimaryKey" parameterType="com.cwu.emallseckill.entity.OrderInfo" resultMap="baseResultMap">
+        SELECT
+            <include refid="base_column_list"/>
+        FROM order_info
+        WHERE id = #{id}
+    </select>
+</mapper>

@@ -1,9 +1,11 @@
 package com.cwu.emallseckill;
 
 import com.cwu.emallseckill.dao.GoodsMapper;
+import com.cwu.emallseckill.dao.OrderInfoMapper;
 import com.cwu.emallseckill.dao.SeckillOrderMapper;
 import com.cwu.emallseckill.dao.UserMapper;
 import com.cwu.emallseckill.entity.Goods;
+import com.cwu.emallseckill.entity.OrderInfo;
 import com.cwu.emallseckill.param.LoginParam;
 import com.cwu.emallseckill.result.Result;
 import com.cwu.emallseckill.service.impl.UserServiceImpl;
@@ -33,6 +35,9 @@ class EmallSeckillApplicationTests {
 
     @Autowired
     private SeckillOrderMapper seckillOrderMapper;
+
+    @Autowired
+    private OrderInfoMapper orderInfoMapper;
 
     @Test
     void contextLoads() {
@@ -166,5 +171,16 @@ class EmallSeckillApplicationTests {
     @Test
     void teestUpdateStock(){
         System.out.println(this.goodsMapper.updateStock(1));
+    }
+
+    @Test
+    void testOrderInsert(){
+        OrderInfo orderInfo=new OrderInfo();
+        this.orderInfoMapper.insert(orderInfo);
+    }
+
+    @Test
+    void testQueryOrderInfo(){
+        System.out.println(this.orderInfoMapper.selectByPrimaryKey(48L));
     }
 }

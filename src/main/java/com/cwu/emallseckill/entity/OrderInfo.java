@@ -28,14 +28,12 @@ public class OrderInfo implements Serializable {
     private Long goods_id;  //商品id
     private Long addr_id;   //地址id
     private String goods_name;  //商品名称
-    private int goods_count;    //商品数量
+    private Integer goods_count;    //商品数量
     private BigDecimal goods_price;     //商品价格
-    private int order_channel;          //订单渠道
-    private int status;                  //订单状态
+    private Integer order_channel;          //订单渠道
+    private Integer status;                  //订单状态
     private Date create_date;           //创建时间
     private Date pay_date;              //支付时间
-
-
 
     public OrderInfo() {
     }
@@ -118,6 +116,14 @@ public class OrderInfo implements Serializable {
         this.order_channel = order_channel;
     }
 
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
     public Date getCreate_date() {
         return create_date;
     }
@@ -134,14 +140,6 @@ public class OrderInfo implements Serializable {
         this.pay_date = pay_date;
     }
 
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
-    }
-
     @Override
     public String toString() {
         return "OrderInfo{" +
@@ -153,6 +151,7 @@ public class OrderInfo implements Serializable {
                 ", goods_count=" + goods_count +
                 ", goods_price=" + goods_price +
                 ", order_channel=" + order_channel +
+                ", status=" + status +
                 ", create_date=" + create_date +
                 ", pay_date=" + pay_date +
                 '}';
