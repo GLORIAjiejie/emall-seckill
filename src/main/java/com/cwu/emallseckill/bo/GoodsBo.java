@@ -111,7 +111,7 @@ public class GoodsBo implements Serializable {
         this.endDateStr = endDateStr;
     }
 
-    public Long getId() {
+    public static Long getId() {
         return id;
     }
 

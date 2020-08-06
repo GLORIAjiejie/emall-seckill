@@ -6,6 +6,7 @@ import com.cwu.emallseckill.dao.SeckillOrderMapper;
 import com.cwu.emallseckill.dao.UserMapper;
 import com.cwu.emallseckill.entity.Goods;
 import com.cwu.emallseckill.entity.OrderInfo;
+import com.cwu.emallseckill.entity.SeckillOrder;
 import com.cwu.emallseckill.param.LoginParam;
 import com.cwu.emallseckill.result.Result;
 import com.cwu.emallseckill.service.impl.UserServiceImpl;
@@ -192,5 +193,14 @@ class EmallSeckillApplicationTests {
     @Test
     void testQueryOrderInfo(){
         System.out.println(this.orderInfoMapper.selectByPrimaryKey(43L));
+    }
+
+    @Test
+    void testInsertSelective(){
+        SeckillOrder order=new SeckillOrder();
+        order.setUserId(1410080408L);
+        order.setGoodsId(1L);
+        order.setOrderId(2L);
+        this.seckillOrderMapper.insertSelective(order);
     }
 }

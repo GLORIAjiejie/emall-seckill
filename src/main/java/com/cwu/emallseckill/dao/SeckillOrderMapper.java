@@ -27,4 +27,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface SeckillOrderMapper {
     SeckillOrder selectByUserIdAndGoodsId(@Param("userId")long userId,@Param("goodsId")long goodsId);
+
+    int insertSelective(@Param("record") SeckillOrder record);
 }

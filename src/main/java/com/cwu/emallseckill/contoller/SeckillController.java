@@ -12,6 +12,7 @@ package com.cwu.emallseckill.contoller;
 
 import com.cwu.emallseckill.bo.GoodsBo;
 import com.cwu.emallseckill.consts.Const;
+import com.cwu.emallseckill.entity.OrderInfo;
 import com.cwu.emallseckill.entity.SeckillOrder;
 import com.cwu.emallseckill.entity.User;
 import com.cwu.emallseckill.redis.GoodsKey;
@@ -66,9 +67,9 @@ public class SeckillController implements InitializingBean {
             return;
         }
         for (GoodsBo goods : goodsBoList) {
-            this.redisServer.set(GoodsKey.getSeckillGoodsStock, "" + goods.getId(),
+            this.redisServer.set(GoodsKey.getSeckillGoodsStock, "" + GoodsBo.getId(),
                     goods.getStockCount(), Const.RedisCacheExtime.GOODS_LIST);
-            localOverMap.put(goods.getId(), false);
+            localOverMap.put(GoodsBo.getId(), false);
         }
     }
 
@@ -114,8 +115,8 @@ public class SeckillController implements InitializingBean {
 
         //还未下单，减库存，下订单，写入秒杀订单
         GoodsBo goodsBo=this.seckillGoodsService.getSeckillGoodsBoByGoosId(goodsId);
+        OrderInfo orderInfo=this.seckillOrderService.inser(user,goodsBo);
 
-
-        return null;
+        return Result.success(0);
     }
 }
