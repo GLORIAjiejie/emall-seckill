@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cwu.emallseckill.dao.SeckillOrderMapper">
+    <resultMap id="baseResultMap" type="com.cwu.emallseckill.entity.SeckillOrder">
+        <constructor>
+            <idArg column="id" jdbcType="BIGINT" javaType="java.lang.Long"/>
+            <arg column="user_id" jdbcType="BIGINT" javaType="java.lang.Long"/>
+            <arg column="order_id" jdbcType="BIGINT" javaType="java.lang.Long"/>
+            <arg column="goods_id" jdbcType="BIGINT" javaType="java.lang.Long"/>
+        </constructor>
+    </resultMap>
+
+    <sql id="base_column_list">
+        id,user_id,order_id,goods_id
+    </sql>
+
+    <!-- 根据 id 查询 -->
+    <select id="selectByUserIdAndGoodsId" parameterType="com.cwu.emallseckill.entity.SeckillOrder" resultMap="baseResultMap">
+        SELECT
+        <include refid="base_column_list"/>
+        FROM seckill_order
+        WHERE
+            user_id =#{userId,jdbcType=BIGINT}
+            AND
+            goods_Id = #{goodsId,jdbcType=BIGINT}
+    </select>
+
+</mapper>

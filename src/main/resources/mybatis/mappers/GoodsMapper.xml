@@ -146,4 +146,11 @@
         LEFT JOIN seckill_goods sg ON sg.goods_id = goods.id
         WHERE goods.id = #{goodsId}
     </select>
+
+    <update id="updateStock" parameterType="java.lang.Long">
+        UPDATE seckill_goods
+        SET
+            stock_count = stock_count -1
+        WHERE goods_Id = #{goodsId}
+    </update>
 </mapper>

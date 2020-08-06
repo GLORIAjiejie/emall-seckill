@@ -41,4 +41,11 @@ public class SeckillGoodsServiceImpl implements ISeckillGoodsService {
     public GoodsBo getSeckillGoodsBoByGoosId(long id) {
         return goodsMapper.getSeckillGoodsBoByGoodsId(id);
     }
+
+    @Override
+    public int reduceStock(long goodsId) {
+        return 0;
+    }
+
+
 }

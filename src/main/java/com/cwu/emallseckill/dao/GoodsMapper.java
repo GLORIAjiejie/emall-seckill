@@ -33,4 +33,6 @@ public interface GoodsMapper {
     /** 查询秒杀商品详情 */
     GoodsBo getSeckillGoodsBoByGoodsId(@Param("goodsId") long goodsId);
 
+    /** 减少商品库存数量 */
+    int updateStock(@Param("goodsId") long goodsId);
 }

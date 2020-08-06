@@ -97,8 +97,8 @@ public class RedisServer {
         Jedis jedis = null;
         Long result = null;
         try {
-            jedis=jedisPool.getResource();
-            result= jedis.del(prefix.getPrefix()+key);
+            jedis = jedisPool.getResource();
+            result = jedis.del(prefix.getPrefix() + key);
             return result;
         } finally {
             returnToPool(jedis);
@@ -124,6 +124,21 @@ public class RedisServer {
             return (T) Long.valueOf(data);
         } else {
             return JSON.toJavaObject(JSON.parseObject(data), clazz);
+        }
+    }
+
+    /**
+     * 减少值
+     */
+    public <T> Long desr(KeyPrefix prefix, String key) {
+        Jedis jedis = null;
+        try {
+            jedis = jedisPool.getResource();
+            //生成真正的key
+            String realKey = prefix.getPrefix() + key;
+            return jedis.decr(realKey);
+        } finally {
+            returnToPool(jedis);
         }
     }
 }

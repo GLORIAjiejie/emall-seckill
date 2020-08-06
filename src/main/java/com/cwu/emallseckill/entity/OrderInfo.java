@@ -10,8 +10,8 @@
  */
 package com.cwu.emallseckill.entity;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.Date;
 
 /**
@@ -22,22 +22,25 @@ import java.util.Date;
  * @create 2020-08-02
  * @since 1.0.0
  */
-public class OrderInfo {
-    private BigInteger id;
-    private BigInteger user_id;
-    private BigInteger goods_id;
-    private BigInteger addr_id;
-    private String goods_name;
-    private int goods_count;
-    private BigDecimal goods_price;
-    private int order_channel;
-    private Date create_date;
-    private Date pay_date;
+public class OrderInfo implements Serializable {
+    private Long id;        //数据行序号
+    private Long user_id;   //用户id
+    private Long goods_id;  //商品id
+    private Long addr_id;   //地址id
+    private String goods_name;  //商品名称
+    private int goods_count;    //商品数量
+    private BigDecimal goods_price;     //商品价格
+    private int order_channel;          //订单渠道
+    private int status;                  //订单状态
+    private Date create_date;           //创建时间
+    private Date pay_date;              //支付时间
+
+
 
     public OrderInfo() {
     }
 
-    public OrderInfo(BigInteger id, BigInteger user_id, BigInteger goods_id, BigInteger addr_id, String goods_name, int goods_count, BigDecimal goods_price, int order_channel, Date create_date, Date pay_date) {
+    public OrderInfo(Long id, Long user_id, Long goods_id, Long addr_id, String goods_name, int goods_count, BigDecimal goods_price, int order_channel, int status, Date create_date, Date pay_date) {
         this.id = id;
         this.user_id = user_id;
         this.goods_id = goods_id;
@@ -46,39 +49,40 @@ public class OrderInfo {
         this.goods_count = goods_count;
         this.goods_price = goods_price;
         this.order_channel = order_channel;
+        this.status = status;
         this.create_date = create_date;
         this.pay_date = pay_date;
     }
 
-    public BigInteger getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(BigInteger id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public BigInteger getUser_id() {
+    public Long getUser_id() {
         return user_id;
     }
 
-    public void setUser_id(BigInteger user_id) {
+    public void setUser_id(Long user_id) {
         this.user_id = user_id;
     }
 
-    public BigInteger getGoods_id() {
+    public Long getGoods_id() {
         return goods_id;
     }
 
-    public void setGoods_id(BigInteger goods_id) {
+    public void setGoods_id(Long goods_id) {
         this.goods_id = goods_id;
     }
 
-    public BigInteger getAddr_id() {
+    public Long getAddr_id() {
         return addr_id;
     }
 
-    public void setAddr_id(BigInteger addr_id) {
+    public void setAddr_id(Long addr_id) {
         this.addr_id = addr_id;
     }
 
@@ -128,6 +132,14 @@ public class OrderInfo {
 
     public void setPay_date(Date pay_date) {
         this.pay_date = pay_date;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 
     @Override
