@@ -35,10 +35,10 @@ public class OrderInfo implements Serializable {
     private Date create_date;           //创建时间
     private Date pay_date;              //支付时间
 
-    public OrderInfo() {
-    }
+    public OrderInfo(){}
 
-    public OrderInfo(Long id, Long user_id, Long goods_id, Long addr_id, String goods_name, int goods_count, BigDecimal goods_price, int order_channel, int status, Date create_date, Date pay_date) {
+    public OrderInfo(Long id, Long user_id, Long goods_id, Long addr_id, String goods_name, Integer goods_count, BigDecimal goods_price, Integer order_channel, Integer status, Date create_date, Date pay_date) {
+        super();
         this.id = id;
         this.user_id = user_id;
         this.goods_id = goods_id;

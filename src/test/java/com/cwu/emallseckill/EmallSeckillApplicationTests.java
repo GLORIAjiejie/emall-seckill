@@ -169,18 +169,28 @@ class EmallSeckillApplicationTests {
     }
 
     @Test
-    void teestUpdateStock(){
+    void testUpdateStock(){
         System.out.println(this.goodsMapper.updateStock(1));
     }
 
     @Test
     void testOrderInsert(){
         OrderInfo orderInfo=new OrderInfo();
+        orderInfo.setUser_id(1L);
+        orderInfo.setGoods_id(2L);
+        orderInfo.setAddr_id(0L);
+        orderInfo.setGoods_name("xiaomi 8");
+        orderInfo.setGoods_count(1);
+        orderInfo.setGoods_price(new BigDecimal(2699.00));
+        orderInfo.setOrder_channel(1);
+        orderInfo.setStatus(0);
+        orderInfo.setCreate_date(new Date());
+        orderInfo.setPay_date(null);
         this.orderInfoMapper.insert(orderInfo);
     }
 
     @Test
     void testQueryOrderInfo(){
-        System.out.println(this.orderInfoMapper.selectByPrimaryKey(48L));
+        System.out.println(this.orderInfoMapper.selectByPrimaryKey(43L));
     }
 }

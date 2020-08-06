@@ -43,6 +43,6 @@
         SELECT
             <include refid="base_column_list"/>
         FROM order_info
-        WHERE id = #{id}
+        WHERE id = #{id,jdbcType=BIGINT}
     </select>
 </mapper>
