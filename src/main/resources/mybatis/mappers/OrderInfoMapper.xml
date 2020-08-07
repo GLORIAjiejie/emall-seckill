@@ -39,6 +39,75 @@
         )
     </insert>
 
+    <insert id="insertSelective" parameterType="com.cwu.emallseckill.entity.OrderInfo" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO
+            order_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test=" id !=null">
+                id,
+            </if>
+            <if test=" userId !=null">
+                user_id,
+            </if>
+            <if test=" goodsId !=null">
+                goods_id,
+            </if>
+            <if test=" addrId !=null">
+                addr_id,
+            </if>
+            <if test=" goodsName !=null">
+                goods_name,
+            </if>
+            <if test=" goodsCount !=null">
+                goods_count,
+            </if>
+            <if test=" goodsPrice !=null">
+                goods_price,
+            </if>
+            <if test=" orderChannel !=null">
+                order_channel,
+            </if>
+            <if test=" createDate !=null">
+                create_date,
+            </if>
+            <if test=" payDate !=null">
+                pay_date,
+            </if>
+        </trim>
+        <trim prefix=" VALUES(" suffix=")" suffixOverrides=",">
+            <if test=" id !=null">
+                #{orderInfo.id,jdbcType=BIGINT},
+            </if>
+            <if test=" userId !=null">
+                #{orderInfo.user_id,jdbcType=BIGINT},
+            </if>
+            <if test=" goodsId !=null">
+                #{orderInfo.goods_id,jdbcType=BIGINT},
+            </if>
+            <if test=" addrId !=null">
+                #{orderInfo.addr_id,jdbcType=BIGINT},
+            </if>
+            <if test=" goodsName !=null">
+                #{orderInfo.goods_name,jdbcType=VARCHAR},
+            </if>
+            <if test=" goodsCount !=null">
+                #{orderInfo.goods_count,jdbcType=INTEGER},
+            </if>
+            <if test=" goodsPrice !=null">
+                #{orderInfo.goods_price,jdbcType=DECIMAL}
+            </if>
+            <if test=" orderChannel !=null">
+                #{orderInfo.order_channel,jdbcType=INTEGER},
+            </if>
+            <if test=" createDate !=null">
+                #{orderInfo.create_date,jdbcType=TIMESTAMP},
+            </if>
+            <if test=" payDate !=null">
+                #{orderInfo.pay_date,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+
     <select id="selectByPrimaryKey" parameterType="com.cwu.emallseckill.entity.OrderInfo" resultMap="baseResultMap">
         SELECT
             <include refid="base_column_list"/>

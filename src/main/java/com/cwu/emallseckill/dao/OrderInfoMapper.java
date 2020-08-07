@@ -8,9 +8,11 @@ import org.springframework.stereotype.Repository;
 @Mapper
 @Repository
 public interface OrderInfoMapper {
-
+    /**添加普通订单信息*/
     int insert(@Param("record") OrderInfo record);
 
     OrderInfo selectByPrimaryKey(@Param("id") long id);
 
+    /**添加秒杀订单信息*/
+    int insertSelective(@Param("orderInfo") OrderInfo orderInfo);
 }

@@ -15,4 +15,6 @@ public interface ISeckillOrderService {
     /** 秒杀成功，保存订单 */
     OrderInfo inser(User user, GoodsBo goodsBo);
 
+    /** 根据用户和用户选择的秒杀商品id获取秒杀链接中的路径 */
+    String createSeckillPath(User user, long goodsId);
 }

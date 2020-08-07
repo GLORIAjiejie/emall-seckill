@@ -21,6 +21,7 @@ import com.cwu.emallseckill.entity.User;
 import com.cwu.emallseckill.redis.RedisServer;
 import com.cwu.emallseckill.redis.SeckillKey;
 import com.cwu.emallseckill.service.ISeckillOrderService;
+import com.cwu.emallseckill.util.MD5Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,6 +29,7 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * 〈一句话功能简述〉<br>
@@ -100,6 +102,17 @@ public class SeckillOrderServiceImpl implements ISeckillOrderService {
             setGoodsOver(GoodsBo.getId());
             return null;
         }
+    }
+
+    @Override
+    public String createSeckillPath(User user, long goodsId) {
+        if (ObjectUtils.isEmpty(user)||goodsId<=0) {
+            return null;
+        }
+        String str= MD5Util.md5(UUID.randomUUID()+"123456");
+        this.redisServer.set(SeckillKey.getSeckillPath,""+user.getId()+"_"+goodsId,
+                str,Const.RedisCacheExtime.GOODS_ID);
+        return str;
     }
 
     private void setGoodsOver(Long id){

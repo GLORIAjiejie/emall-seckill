@@ -119,4 +119,18 @@ public class SeckillController implements InitializingBean {
 
         return Result.success(0);
     }
+
+
+    /** 生成随机路径 **/
+    @RequestMapping("/path")
+    @ResponseBody
+    public Result<String> getSeckillPath(@RequestParam("goodsId")long goodsId,HttpServletRequest request){
+        String loginToken=CookieUtil.readLoginToken(request);
+        User user= (User) this.redisServer.get(UserKey.getByName,loginToken,User.class);
+        if (ObjectUtils.isEmpty(user)){
+            return Result.error(CodeMsg.USER_NO_LOGIN);
+        }
+        String path=this.seckillOrderService.createSeckillPath(user,goodsId);
+        return Result.success(path);
+    }
 }
