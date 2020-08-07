@@ -31,7 +31,7 @@ public class GoodsBo implements Serializable {
     private Date endDate;               //结束日期
     private String endDateStr;
 
-    private Long id;            //数据行序号
+    private static Long id;            //数据行序号
     private String goodsName;  //商品名称
     private String goodsTitle; //商品标题
     private String goodsImg;   //商品图片
@@ -51,7 +51,7 @@ public class GoodsBo implements Serializable {
         this.stockCount = stockCount;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.id = id;
+        GoodsBo.id = id;
         this.goodsName = goodsName;
         this.goodsTitle = goodsTitle;
         this.goodsImg = goodsImg;
@@ -116,7 +116,7 @@ public class GoodsBo implements Serializable {
     }
 
     public void setId(Long id) {
-        this.id = id;
+        GoodsBo.id = id;
     }
 
     public String getGoodsName() {

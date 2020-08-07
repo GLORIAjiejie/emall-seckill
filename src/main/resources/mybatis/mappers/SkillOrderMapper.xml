@@ -41,22 +41,22 @@
                 order_id,
             </if>
             <if test="goodsId != null">
-                goods_id
+                goods_id,
             </if>
         </trim>
         <!-- VALUES() -->
         <trim prefix="VALUES (" suffix =")" suffixOverrides=",">
             <if test="id != null">
-                #{record.id,jdbcType=BIGINT},
+                #{id,jdbcType=BIGINT},
             </if>
             <if test="userId != null">
-                #{record.user_id,jdbcType=BIGINT},
+                #{userId,jdbcType=BIGINT},
             </if>
             <if test="orderId != null">
-                #{record.order_id,jdbcType=BIGINT},
+                #{orderId,jdbcType=BIGINT},
             </if>
             <if test="goodsId != null">
-                #{record.goods_id,jdbcType=BIGINT}
+                #{goodsId,jdbcType=BIGINT},
             </if>
         </trim>
 
