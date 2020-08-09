@@ -75,6 +75,22 @@ grammar_tableExtra: true
         </dependency>
 ```
 
+- 手机号码校验部分
+ ```markdown
+1. JSR303参数校验 + 全局异常处理器
+
+2. service中的方法入参有许多参数的判断代码，为了简化，可以利用JSR303参数校验
+
+3. pom文件引入依赖
+ ```
+ 
+ ```markdown?linenums
+ 		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
+ ```
+
 
 
 ## 2.3 安全优化部分
