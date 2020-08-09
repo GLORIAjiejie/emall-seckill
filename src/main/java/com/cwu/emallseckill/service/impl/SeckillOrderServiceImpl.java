@@ -92,7 +92,7 @@ public class SeckillOrderServiceImpl implements ISeckillOrderService {
             long orderId = this.orderInfoMapper.insert(orderInfo);
             SeckillOrder seckillOrder = new SeckillOrder();
             seckillOrder.setGoodsId(GoodsBo.getId());
-            seckillOrder.setOrderId(orderInfo.getId());
+            seckillOrder.setOrderId(orderId);
             seckillOrder.setUserId((long) user.getId());
             //秒杀中添加数据
             this.seckillOrderMapper.insertSelective(seckillOrder);
@@ -118,9 +118,9 @@ public class SeckillOrderServiceImpl implements ISeckillOrderService {
     @Override
     public long getSeckillResult(int userId, long goodsId) {
         SeckillOrder order=getSeckillOrderByUserIdAndGoodsId(userId,goodsId);
-        if (!ObjectUtils.isEmpty(order)){
+        if (!ObjectUtils.isEmpty(order)){//秒杀成功
             return order.getOrderId();
-        }else{
+        }else{//查看秒杀是否已经结束
             boolean isOver=getGoodsOver(goodsId);
             if (isOver){
                 //秒杀结束

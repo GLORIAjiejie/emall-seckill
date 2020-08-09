@@ -56,13 +56,13 @@ public class SeckillController implements InitializingBean {
     @Autowired
     ISeckillOrderService seckillOrderService;
 
-    public static Map<Long, Boolean> localOverMap = new HashMap<>();
+    Map<Long, Boolean> localOverMap = new HashMap<>();
 
     /**
      * 初始化：秒杀商品的列表，将秒杀商品数量存放到redis且设置缓存有效时间
      */
     @Override
-    public void afterPropertiesSet() throws Exception {
+    public void afterPropertiesSet() {
         List<GoodsBo> goodsBoList = this.seckillGoodsService.getSekillGoodsList();
         if (ObjectUtils.isEmpty(goodsBoList)) {
             return;
@@ -84,7 +84,6 @@ public class SeckillController implements InitializingBean {
                                 @RequestParam("goodsId") long goodsId,
                                 @PathVariable("path") String path,
                                 HttpServletRequest request)  {
-        //localOverMap.put(goodsId,false);
         String loginToken = CookieUtil.readLoginToken(request);
         User user = (User) this.redisServer.get(UserKey.getByName, loginToken, User.class);
         if (ObjectUtils.isEmpty(user)) {
@@ -148,7 +147,7 @@ public class SeckillController implements InitializingBean {
         return Result.success(path);
     }
 
-    /* * 克华段轮询查看是否下单成功
+    /* * 轮询查看是否下单成功
      * orderId：成功
      * -1：秒杀失败
      * 0：秒杀排队中
