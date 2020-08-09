@@ -10,8 +10,9 @@ public interface ISeckillGoodsService {
     List<GoodsBo> getSekillGoodsList();
 
     /** 获取商品详情 */
-    GoodsBo getSeckillGoodsBoByGoosId(long id);
+    GoodsBo getSeckillGoodsBoByGoodsId(long id);
 
     /** 商品库存减少 */
     int reduceStock(long goodsId);
+
 }

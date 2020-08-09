@@ -10,6 +10,7 @@
  */
 package com.cwu.emallseckill.contoller;
 
+import com.cwu.emallseckill.annotations.AccessLimit;
 import com.cwu.emallseckill.bo.GoodsBo;
 import com.cwu.emallseckill.consts.Const;
 import com.cwu.emallseckill.entity.OrderInfo;
@@ -47,15 +48,15 @@ import java.util.Map;
 public class SeckillController implements InitializingBean {
 
     @Autowired
-    private RedisServer redisServer;
+    RedisServer redisServer;
 
     @Autowired
-    private ISeckillGoodsService seckillGoodsService;
-
-    private Map<Long, Boolean> localOverMap = new HashMap<Long, Boolean>();
+    ISeckillGoodsService seckillGoodsService;
 
     @Autowired
-    private ISeckillOrderService seckillOrderService;
+    ISeckillOrderService seckillOrderService;
+
+    public static Map<Long, Boolean> localOverMap = new HashMap<>();
 
     /**
      * 初始化：秒杀商品的列表，将秒杀商品数量存放到redis且设置缓存有效时间
@@ -67,6 +68,7 @@ public class SeckillController implements InitializingBean {
             return;
         }
         for (GoodsBo goods : goodsBoList) {
+            System.out.println(goods.toString());
             this.redisServer.set(GoodsKey.getSeckillGoodsStock, "" + GoodsBo.getId(),
                     goods.getStockCount(), Const.RedisCacheExtime.GOODS_LIST);
             localOverMap.put(GoodsBo.getId(), false);
@@ -76,10 +78,13 @@ public class SeckillController implements InitializingBean {
     /**
      * 隐藏秒杀路径后的请求地址
      */
-    @RequestMapping(value = "/{path}/seckill", method = RequestMethod.POST)
+    @RequestMapping(value = "/{path}/seckill",method = RequestMethod.POST)
     @ResponseBody
-    public Result<Integer> list(Model model, @RequestParam("goodsId") long goodsId,
-                                @PathVariable("path") String path, HttpServletRequest request) {
+    public Result<Integer> list(Model model,
+                                @RequestParam("goodsId") long goodsId,
+                                @PathVariable("path") String path,
+                                HttpServletRequest request)  {
+        //localOverMap.put(goodsId,false);
         String loginToken = CookieUtil.readLoginToken(request);
         User user = (User) this.redisServer.get(UserKey.getByName, loginToken, User.class);
         if (ObjectUtils.isEmpty(user)) {
@@ -93,14 +98,21 @@ public class SeckillController implements InitializingBean {
             return Result.error(CodeMsg.REQUEST_ILLEGAL);
         }
 
-        //内存标记，减少redis访问
-        boolean over = localOverMap.get(goodsId);
-        if (over) {
-            return Result.error(CodeMsg.SECKILL_OVER);
+        //内存标记，减少redis放完
+        if (localOverMap.size()>0){
+            if (localOverMap.get(goodsId)!=null){
+                boolean over = localOverMap.get(goodsId);
+                System.out.println("[over]"+over);
+                if(over){
+                    return Result.error(CodeMsg.SECKILL_OVER);
+                }
+            }
+
         }
 
         //数量减少即库存减少
         long stock = this.redisServer.desr(GoodsKey.getSeckillGoodsStock, "" + goodsId);
+        System.out.println("[stock]"+stock);
         if (stock < 0) {
             //商品已经秒杀完了
             localOverMap.put(goodsId, true);
@@ -114,17 +126,19 @@ public class SeckillController implements InitializingBean {
         }
 
         //还未下单，减库存，下订单，写入秒杀订单
-        GoodsBo goodsBo=this.seckillGoodsService.getSeckillGoodsBoByGoosId(goodsId);
-        OrderInfo orderInfo=this.seckillOrderService.inser(user,goodsBo);
-
+        GoodsBo goodsBo = this.seckillGoodsService.getSeckillGoodsBoByGoodsId(goodsId);
+        OrderInfo orderInfo = this.seckillOrderService.insert(user,goodsBo);
         return Result.success(0);
     }
 
 
-    /** 生成随机路径 **/
-    @RequestMapping("/path")
+    /** 生成随机路径，用于隐藏秒杀路径
+     *  自定义一个注解AccessLimit seconds:请求失效时间，maxCount失效时间内最大请求数，needLogin是否需要登陆  **/
+    @AccessLimit(seconds = 5,maxCount = 5,needLogin = true)
+    @RequestMapping(value = "/path",method = RequestMethod.GET)
     @ResponseBody
-    public Result<String> getSeckillPath(@RequestParam("goodsId")long goodsId,HttpServletRequest request){
+    public Result<String> getSeckillPath(@RequestParam("goodsId")long goodsId,
+                                         HttpServletRequest request){
         String loginToken=CookieUtil.readLoginToken(request);
         User user= (User) this.redisServer.get(UserKey.getByName,loginToken,User.class);
         if (ObjectUtils.isEmpty(user)){
@@ -132,5 +146,22 @@ public class SeckillController implements InitializingBean {
         }
         String path=this.seckillOrderService.createSeckillPath(user,goodsId);
         return Result.success(path);
+    }
+
+    /* * 克华段轮询查看是否下单成功
+     * orderId：成功
+     * -1：秒杀失败
+     * 0：秒杀排队中
+     * */
+    @RequestMapping(value = "/result",method = RequestMethod.GET)
+    @ResponseBody
+    public Result<Long> seckillResult(@RequestParam("goodsId")long goodsId,HttpServletRequest request){
+        String loginToken = CookieUtil.readLoginToken(request);
+        User user= (User) this.redisServer.get(UserKey.getByName,loginToken,User.class);
+        if (ObjectUtils.isEmpty(user)){
+            return Result.error(CodeMsg.USER_NO_LOGIN);
+        }
+        long result=this.seckillOrderService.getSeckillResult(user.getId(),goodsId);
+        return Result.success(result);
     }
 }

@@ -141,4 +141,32 @@ public class RedisServer {
             returnToPool(jedis);
         }
     }
+
+    /** 可以通过判断该缓存是否过期 */
+    public Long expice(KeyPrefix prefix, String key, int exTime) {
+        Jedis jedis = null;
+        Long result = null;
+        try {
+            jedis = jedisPool.getResource();
+            result = jedis.expire(prefix.getPrefix() + key, exTime);
+            return result;
+        } finally {
+            returnToPool(jedis);
+        }
+    }
+
+    /**
+     * 通过key判断是否存在
+     */
+    public boolean exist(KeyPrefix prefix, String key) {
+        Jedis jedis = null;
+        try {
+            jedis = jedisPool.getResource();
+            //生成真正的key
+            String realKey = prefix.getPrefix() + key;
+            return jedis.exists(realKey);
+        } finally {
+            returnToPool(jedis);
+        }
+    }
 }

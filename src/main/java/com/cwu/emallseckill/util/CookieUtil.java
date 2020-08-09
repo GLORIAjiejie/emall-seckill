@@ -48,8 +48,8 @@ public class CookieUtil {
     public static String readLoginToken(HttpServletRequest request){
         Cookie[] cookies=request.getCookies();
         if (cookies !=null){
-            for (Cookie cookie:cookies){
-                if (StringUtils.equals(cookie.getName(),COOKIE_NAME)){
+            for (Cookie cookie:cookies){//StringUtils.equal(cookie.getName(),COOKIE_NAME) &&
+                if (StringUtils.equals(cookie.getName(),"JSESSIONID")){
                     return cookie.getValue();
                 }
             }

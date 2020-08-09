@@ -66,7 +66,7 @@ public class GoodsContoller {
     public Result<GoodsDetailVo> goodsDetail(@PathVariable("goodsId") long goodsId, HttpServletRequest request) {
         String loginToken = CookieUtil.readLoginToken(request);
         User user = (User) this.redisServer.get(UserKey.getByName, loginToken, User.class);
-        GoodsBo goods = this.seckillGoodsService.getSeckillGoodsBoByGoosId(goodsId);
+        GoodsBo goods = this.seckillGoodsService.getSeckillGoodsBoByGoodsId(goodsId);
         if (ObjectUtils.isEmpty(goods)) {
             return Result.error(CodeMsg.NO_GOODS);
         } else {

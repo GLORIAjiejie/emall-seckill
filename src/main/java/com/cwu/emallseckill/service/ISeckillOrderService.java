@@ -13,8 +13,10 @@ public interface ISeckillOrderService {
     SeckillOrder getSeckillOrderByUserIdAndGoodsId(long userId,long goodsId);
 
     /** 秒杀成功，保存订单 */
-    OrderInfo inser(User user, GoodsBo goodsBo);
+    OrderInfo insert(User user, GoodsBo goodsBo);
 
     /** 根据用户和用户选择的秒杀商品id获取秒杀链接中的路径 */
     String createSeckillPath(User user, long goodsId);
+
+    long getSeckillResult(int id, long goodsId);
 }

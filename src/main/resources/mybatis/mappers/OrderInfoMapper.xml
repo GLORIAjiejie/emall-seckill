@@ -67,6 +67,9 @@
             <if test=" orderChannel !=null">
                 order_channel,
             </if>
+            <if test=" status !=null">
+                status,
+            </if>
             <if test=" createDate !=null">
                 create_date,
             </if>
@@ -98,6 +101,9 @@
             </if>
             <if test=" orderChannel !=null">
                 #{orderInfo.order_channel,jdbcType=INTEGER},
+            </if>
+            <if test=" status !=null">
+                #{orderInfo.status,jdbcType=INTEGER},
             </if>
             <if test=" createDate !=null">
                 #{orderInfo.create_date,jdbcType=TIMESTAMP},

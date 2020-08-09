@@ -73,7 +73,7 @@ public class SeckillOrderServiceImpl implements ISeckillOrderService {
 
     @Transactional
     @Override
-    public OrderInfo inser(User user, GoodsBo goodsBo) {
+    public OrderInfo insert(User user, GoodsBo goodsBo) {
         //秒杀商品库存减一
         // int success = this.seckillOrderMapper.selectByUserIdAndGoodsId(user,goodsBo);
         int success = this.goodsMapper.updateStock(GoodsBo.getId());
@@ -115,7 +115,30 @@ public class SeckillOrderServiceImpl implements ISeckillOrderService {
         return str;
     }
 
-    private void setGoodsOver(Long id){
+    @Override
+    public long getSeckillResult(int userId, long goodsId) {
+        SeckillOrder order=getSeckillOrderByUserIdAndGoodsId(userId,goodsId);
+        if (!ObjectUtils.isEmpty(order)){
+            return order.getOrderId();
+        }else{
+            boolean isOver=getGoodsOver(goodsId);
+            if (isOver){
+                //秒杀结束
+                return -1;
+            }else{
+                //秒杀中
+                return 0;
+            }
+        }
+    }
+
+    /** 查看秒杀商品是否已经结束 */
+    private boolean getGoodsOver(long goodsId) {
+        return this.redisServer.exist(SeckillKey.isGoodsOver,""+goodsId);
+    }
+
+
+    public void setGoodsOver(Long id){
         this.redisServer.set(SeckillKey.isGoodsOver,""+id,true,
                 Const.RedisCacheExtime.GOODS_ID);
     }
