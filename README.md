@@ -57,22 +57,22 @@ grammar_tableExtra: true
 ```
 添加的依赖如下：
 ```
-		 <dependency>
-            <groupId>commons-codec</groupId>
-            <artifactId>commons-codec</artifactId>
-        </dependency>
+<dependency>
+	<groupId>commons-codec</groupId>
+	<artifactId>commons-codec</artifactId>
+</dependency>
 
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-            <version>3.6</version>
-        </dependency>
+<dependency>
+	<groupId>org.apache.commons</groupId>
+	<artifactId>commons-lang3</artifactId>
+	<version>3.6</version>
+</dependency>
 
-        <dependency>
-            <groupId>commons-collections</groupId>
-            <artifactId>commons-collections</artifactId>
-            <version>3.2.1</version>
-        </dependency>
+<dependency>
+	<groupId>commons-collections</groupId>
+	<artifactId>commons-collections</artifactId>
+	<version>3.2.1</version>
+</dependency>
 ```
 
 
