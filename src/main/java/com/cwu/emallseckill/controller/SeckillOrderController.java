@@ -95,7 +95,18 @@ public class SeckillOrderController {
         }
 
         OrderInfo order = this.seckillOrderService.getOrderInfo(orderId);
+        if (ObjectUtils.isEmpty(order)){
+            return Result.error(CodeMsg.OREDER_NO_EXIST);
+        }
+        long goodsId=order.getGoods_id();
+        GoodsBo goodsBo=this.seckillGoodsService.getSeckillGoodsBoByGoodsId(goodsId);
+        OrderDetailVo vo =new OrderDetailVo();
+        //日期转换
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        goodsBo.setCreateDateStr(formatter.format(goodsBo.getCreateDate()));
+        vo.setOrder(order);
+        vo.setGoods(goodsBo);
 
-        return null;
+        return Result.success(vo);
     }
 }
