@@ -74,6 +74,6 @@
         SELECT
         <include refid="base_column_list"/>
         FROM seckill_order
-        WHERE order_id = #{orderId,jdbcType=BIGINT}
+        WHERE id = #{id,jdbcType=BIGINT}
     </select>
 </mapper>

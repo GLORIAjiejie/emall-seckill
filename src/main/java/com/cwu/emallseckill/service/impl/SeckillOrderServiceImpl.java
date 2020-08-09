@@ -155,7 +155,10 @@ public class SeckillOrderServiceImpl implements ISeckillOrderService {
     @Override
     public OrderInfo getOrderInfo(long orderId) {
         SeckillOrder seckillOrder=this.seckillOrderMapper.selectByPrimaryKey(orderId);
-        return null;
+        if (ObjectUtils.isEmpty(seckillOrder)){
+            return null;
+        }
+        return this.orderInfoMapper.selectByPrimaryKey(seckillOrder.getOrderId());
     }
 
 

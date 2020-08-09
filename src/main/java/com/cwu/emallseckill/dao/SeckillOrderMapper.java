@@ -34,5 +34,5 @@ public interface SeckillOrderMapper {
 
     List<SeckillOrder> selectByUserId(@Param("user_id")long user_id);
 
-    SeckillOrder selectByPrimaryKey(@Param("order_id") long order_id);
+    SeckillOrder selectByPrimaryKey(@Param("id") long id);
 }
