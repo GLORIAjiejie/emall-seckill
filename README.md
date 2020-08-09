@@ -35,7 +35,7 @@ grammar_tableExtra: true
 
 [toc!?theme=gray&depth=4]
 
-# eckill 电子直播-秒杀系统
+# 1. Seckill 电商购物秒杀系统介绍
 
 ## 1.1 涉及到的知识
 - VUE全家桶(前端开发)
@@ -45,7 +45,39 @@ grammar_tableExtra: true
 ## 1.2 当前进度
 - 功能：登录页、登陆功能
 
-## 1.3 安全优化部分
+# 2.功能实现部分
+## 2.1 登陆部分
+- 两次MD5
+```markdown
+ 1. 用户端： PASS = MD5( 明文 + 固定 Salt) 
+
+ 2. 服务端： PASS = MD5( 用户输入 + 随机 Salt)
+
+	通过两次MD5，可以增大http明文传输过程或数据库被盗后，黑客通过彩虹表等手段反推出明文密码的难度（有一定作用，但不能保证绝对安全）。
+```
+添加的依赖如下：
+```
+		 <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.6</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-collections</groupId>
+            <artifactId>commons-collections</artifactId>
+            <version>3.2.1</version>
+        </dependency>
+```
+
+
+
+## 2.3 安全优化部分
 - 隐藏秒杀地址
 ```markdown
 思路：秒杀开始前，先去请求接口获取秒杀地址
