@@ -132,13 +132,18 @@ public class SeckillOrderServiceImpl implements ISeckillOrderService {
         }
     }
 
+    @Override
+    public OrderInfo getOrderInfo(long orderId) {
+        return null;
+    }
+
     /** 查看秒杀商品是否已经结束 */
     private boolean getGoodsOver(long goodsId) {
         return this.redisServer.exist(SeckillKey.isGoodsOver,""+goodsId);
     }
 
 
-    public void setGoodsOver(Long id){
+    private void setGoodsOver(Long id){
         this.redisServer.set(SeckillKey.isGoodsOver,""+id,true,
                 Const.RedisCacheExtime.GOODS_ID);
     }

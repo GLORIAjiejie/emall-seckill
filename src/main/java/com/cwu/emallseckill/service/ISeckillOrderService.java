@@ -19,4 +19,6 @@ public interface ISeckillOrderService {
     String createSeckillPath(User user, long goodsId);
 
     long getSeckillResult(int id, long goodsId);
+
+    OrderInfo getOrderInfo(long orderId);
 }
