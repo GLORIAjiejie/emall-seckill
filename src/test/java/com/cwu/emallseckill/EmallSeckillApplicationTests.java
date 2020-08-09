@@ -203,4 +203,14 @@ class EmallSeckillApplicationTests {
         order.setOrderId(2L);
         this.seckillOrderMapper.insertSelective(order);
     }
+
+    @Test
+    void testSeckillOrderByUserId(){
+        System.out.println(this.seckillOrderMapper.selectByUserId(1410080408L));
+    }
+
+    @Test
+    void testSeckillOrderByPrimary(){
+        System.out.println(this.seckillOrderMapper.selectByPrimaryKey(50L));
+    }
 }

@@ -15,6 +15,8 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * 〈一句话功能简述〉<br> 
  * 〈〉
@@ -29,4 +31,8 @@ public interface SeckillOrderMapper {
     SeckillOrder selectByUserIdAndGoodsId(@Param("userId")long userId,@Param("goodsId")long goodsId);
 
     int insertSelective(SeckillOrder record);
+
+    List<SeckillOrder> selectByUserId(@Param("user_id")long user_id);
+
+    SeckillOrder selectByPrimaryKey(@Param("order_id") long order_id);
 }

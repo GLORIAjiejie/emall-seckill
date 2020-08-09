@@ -61,4 +61,19 @@
         </trim>
 
     </insert>
+
+    <!-- 根据用户id查询该用户下的秒杀订单列表 -->
+    <select id="selectByUserId" parameterType="java.lang.Long" resultMap="baseResultMap">
+        SELECT
+            <include refid="base_column_list"/>
+        FROM seckill_order
+        WHERE user_id = #{user_id,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="baseResultMap">
+        SELECT
+        <include refid="base_column_list"/>
+        FROM seckill_order
+        WHERE order_id = #{orderId,jdbcType=BIGINT}
+    </select>
 </mapper>

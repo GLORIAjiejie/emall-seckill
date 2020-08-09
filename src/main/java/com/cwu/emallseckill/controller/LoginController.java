@@ -8,7 +8,7 @@
  * <author>          <time>          <version>          <desc>
  * 作者姓名           修改时间           版本号              描述
  */
-package com.cwu.emallseckill.contoller;
+package com.cwu.emallseckill.controller;
 
 import com.cwu.emallseckill.consts.Const;
 import com.cwu.emallseckill.entity.User;
@@ -37,7 +37,7 @@ import javax.validation.Valid;
  */
 @RestController
 @RequestMapping("/user")
-public class LoginContoller {
+public class LoginController {
 
     @Autowired
     private RedisServer redisServer;

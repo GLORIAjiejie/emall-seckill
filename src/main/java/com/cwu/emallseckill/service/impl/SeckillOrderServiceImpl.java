@@ -28,7 +28,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -97,7 +99,7 @@ public class SeckillOrderServiceImpl implements ISeckillOrderService {
             //秒杀中添加数据
             this.seckillOrderMapper.insertSelective(seckillOrder);
             return orderInfo;
-        }else{
+        } else {
             //秒杀商品结束
             setGoodsOver(GoodsBo.getId());
             return null;
@@ -106,26 +108,26 @@ public class SeckillOrderServiceImpl implements ISeckillOrderService {
 
     @Override
     public String createSeckillPath(User user, long goodsId) {
-        if (ObjectUtils.isEmpty(user)||goodsId<=0) {
+        if (ObjectUtils.isEmpty(user) || goodsId <= 0) {
             return null;
         }
-        String str= MD5Util.md5(UUID.randomUUID()+"123456");
-        this.redisServer.set(SeckillKey.getSeckillPath,""+user.getId()+"_"+goodsId,
-                str,Const.RedisCacheExtime.GOODS_ID);
+        String str = MD5Util.md5(UUID.randomUUID() + "123456");
+        this.redisServer.set(SeckillKey.getSeckillPath, "" + user.getId() + "_" + goodsId,
+                str, Const.RedisCacheExtime.GOODS_ID);
         return str;
     }
 
     @Override
-    public long getSeckillResult(int userId, long goodsId) {
-        SeckillOrder order=getSeckillOrderByUserIdAndGoodsId(userId,goodsId);
-        if (!ObjectUtils.isEmpty(order)){//秒杀成功
+    public long getSeckillResult(long userId, long goodsId) {
+        SeckillOrder order = getSeckillOrderByUserIdAndGoodsId(userId, goodsId);
+        if (!ObjectUtils.isEmpty(order)) {//秒杀成功
             return order.getOrderId();
-        }else{//查看秒杀是否已经结束
-            boolean isOver=getGoodsOver(goodsId);
-            if (isOver){
+        } else {//查看秒杀是否已经结束
+            boolean isOver = getGoodsOver(goodsId);
+            if (isOver) {
                 //秒杀结束
                 return -1;
-            }else{
+            } else {
                 //秒杀中
                 return 0;
             }
@@ -133,18 +135,40 @@ public class SeckillOrderServiceImpl implements ISeckillOrderService {
     }
 
     @Override
+    public List<OrderInfo> getOrderList(User user) {
+        //根据用户id查询
+        List<SeckillOrder> seckillOrders = this.seckillOrderMapper.selectByUserId(user.getId());
+
+        if (ObjectUtils.isEmpty(seckillOrders) || seckillOrders.size() == 0) {
+            //没有秒杀订单
+            return null;
+        }
+
+        List<OrderInfo> orderInfos = new ArrayList<>();
+        for (SeckillOrder seckillOrder : seckillOrders) {
+            OrderInfo orderInfo = this.orderInfoMapper.selectByPrimaryKey(seckillOrder.getId());
+            orderInfos.add(orderInfo);
+        }
+        return orderInfos;
+    }
+
+    @Override
     public OrderInfo getOrderInfo(long orderId) {
+        SeckillOrder seckillOrder=this.seckillOrderMapper.selectByPrimaryKey(orderId);
         return null;
     }
 
-    /** 查看秒杀商品是否已经结束 */
+
+    /**
+     * 查看秒杀商品是否已经结束
+     */
     private boolean getGoodsOver(long goodsId) {
-        return this.redisServer.exist(SeckillKey.isGoodsOver,""+goodsId);
+        return this.redisServer.exist(SeckillKey.isGoodsOver, "" + goodsId);
     }
 
 
-    private void setGoodsOver(Long id){
-        this.redisServer.set(SeckillKey.isGoodsOver,""+id,true,
+    private void setGoodsOver(Long id) {
+        this.redisServer.set(SeckillKey.isGoodsOver, "" + id, true,
                 Const.RedisCacheExtime.GOODS_ID);
     }
 }

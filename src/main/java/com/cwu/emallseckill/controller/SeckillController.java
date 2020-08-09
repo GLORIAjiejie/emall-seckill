@@ -8,7 +8,7 @@
  * <author>          <time>          <version>          <desc>
  * 作者姓名           修改时间           版本号              描述
  */
-package com.cwu.emallseckill.contoller;
+package com.cwu.emallseckill.controller;
 
 import com.cwu.emallseckill.annotations.AccessLimit;
 import com.cwu.emallseckill.bo.GoodsBo;
