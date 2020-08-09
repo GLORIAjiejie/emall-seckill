@@ -99,11 +99,13 @@ public class SeckillOrderController {
             return Result.error(CodeMsg.OREDER_NO_EXIST);
         }
         long goodsId=order.getGoods_id();
+        System.out.println("[goodsId]"+goodsId);
         GoodsBo goodsBo=this.seckillGoodsService.getSeckillGoodsBoByGoodsId(goodsId);
+        System.out.println(goodsBo.toString());
         OrderDetailVo vo =new OrderDetailVo();
         //日期转换
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        goodsBo.setCreateDateStr(formatter.format(goodsBo.getCreateDate()));
+        goodsBo.setCreateDateStr(formatter.format(goodsBo.getStartDate()));
         vo.setOrder(order);
         vo.setGoods(goodsBo);
 

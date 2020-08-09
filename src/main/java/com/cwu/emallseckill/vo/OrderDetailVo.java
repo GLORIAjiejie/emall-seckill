@@ -22,8 +22,9 @@ import com.cwu.emallseckill.entity.OrderInfo;
  * @since 1.0.0
  */
 public class OrderDetailVo {
-    private OrderInfo order;
     private GoodsBo goods;
+    private OrderInfo order;
+
 
 
     public OrderInfo getOrder() {
@@ -45,8 +46,8 @@ public class OrderDetailVo {
     @Override
     public String toString() {
         return "OrderDetailVo{" +
-                "order=" + order +
-                ", goods=" + goods +
+                "goods=" + goods +
+                ", order=" + order +
                 '}';
     }
 }

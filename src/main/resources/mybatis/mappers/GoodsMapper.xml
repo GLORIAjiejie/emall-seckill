@@ -143,6 +143,8 @@
         SELECT
         <include refid="base_column_sekill_base"/>
         ,
+        <include refid="base_column_list"/>
+        ,
         <include refid="blob_column_list"/>
         FROM goods
         LEFT JOIN seckill_goods sg ON sg.goods_id = goods.id
