@@ -56,23 +56,23 @@ grammar_tableExtra: true
 	通过两次MD5，可以增大http明文传输过程或数据库被盗后，黑客通过彩虹表等手段反推出明文密码的难度（有一定作用，但不能保证绝对安全）。
 ```
 添加的依赖如下：
-```
-<dependency>
-	<groupId>commons-codec</groupId>
-	<artifactId>commons-codec</artifactId>
-</dependency>
+```markdown?linenums
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+        </dependency>
 
-<dependency>
-	<groupId>org.apache.commons</groupId>
-	<artifactId>commons-lang3</artifactId>
-	<version>3.6</version>
-</dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.6</version>
+        </dependency>
 
-<dependency>
-	<groupId>commons-collections</groupId>
-	<artifactId>commons-collections</artifactId>
-	<version>3.2.1</version>
-</dependency>
+        <dependency>
+            <groupId>commons-collections</groupId>
+            <artifactId>commons-collections</artifactId>
+            <version>3.2.1</version>
+        </dependency>
 ```
 
 
