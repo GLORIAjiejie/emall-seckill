@@ -213,4 +213,9 @@ class EmallSeckillApplicationTests {
     void testSeckillOrderByPrimary(){
         System.out.println(this.seckillOrderMapper.selectByPrimaryKey(50L));
     }
+
+    @Test
+    void testSeckillOrderByOrderId(){
+        System.out.println(this.seckillOrderMapper.selectByOrderId(51L));
+    }
 }

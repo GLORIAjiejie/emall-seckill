@@ -76,4 +76,11 @@
         FROM seckill_order
         WHERE id = #{id,jdbcType=BIGINT}
     </select>
+
+    <select id="selectByOrderId" parameterType="java.lang.Long" resultMap="baseResultMap">
+        SELECT
+        <include refid="base_column_list"/>
+        FROM seckill_order
+        WHERE order_id = #{order_id,jdbcType=BIGINT}
+    </select>
 </mapper>
