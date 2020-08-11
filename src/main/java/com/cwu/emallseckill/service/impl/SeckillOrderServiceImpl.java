@@ -94,7 +94,7 @@ public class SeckillOrderServiceImpl implements ISeckillOrderService {
             long orderId = this.orderInfoMapper.insert(orderInfo);
             SeckillOrder seckillOrder = new SeckillOrder();
             seckillOrder.setGoodsId(GoodsBo.getId());
-            seckillOrder.setOrderId(orderId);
+            seckillOrder.setOrderId(orderInfo.getId());
             seckillOrder.setUserId((long) user.getId());
             //秒杀中添加数据
             this.seckillOrderMapper.insertSelective(seckillOrder);

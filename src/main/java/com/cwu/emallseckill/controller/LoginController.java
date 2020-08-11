@@ -19,13 +19,13 @@ import com.cwu.emallseckill.result.Result;
 import com.cwu.emallseckill.service.IUserService;
 import com.cwu.emallseckill.util.CookieUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
 
 /**
  * 〈一句话功能简述〉<br> 
@@ -47,8 +47,12 @@ public class LoginController {
 
     @RequestMapping("/login")
     @ResponseBody
-    public Result<User> login(HttpServletRequest request, @Valid LoginParam param, HttpServletResponse response){
-        Result login=this.userService.login(param);
+    public Result<User> login(HttpServletRequest request, HttpServletResponse response, @RequestBody User user){
+        System.out.println(user.toString());
+        LoginParam loginParam=new LoginParam();
+        loginParam.setMobile(user.getUserName());
+        loginParam.setPassword(user.getPassword());
+        Result<User> login=this.userService.login(loginParam);
         if (login.isSuccess()){
             CookieUtil.writenLoginToken(response,request.getSession().getId());
             this.redisServer.set(UserKey.getByName,request.getSession().getId(),login.getData(),
