@@ -19,10 +19,7 @@ import com.cwu.emallseckill.result.Result;
 import com.cwu.emallseckill.service.IUserService;
 import com.cwu.emallseckill.util.CookieUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -45,10 +42,9 @@ public class LoginController {
     @Autowired
     private IUserService userService;
 
-    @RequestMapping("/login")
+    @PostMapping("/login")
     @ResponseBody
     public Result<User> login(HttpServletRequest request, HttpServletResponse response, @RequestBody User user){
-        System.out.println(user.toString());
         LoginParam loginParam=new LoginParam();
         loginParam.setMobile(user.getUserName());
         loginParam.setPassword(user.getPassword());
@@ -61,7 +57,7 @@ public class LoginController {
         return login;
     }
 
-    @RequestMapping("/logout")
+    @PostMapping("/logout")
     @ResponseBody
     public String logout(HttpServletRequest request,HttpServletResponse response){
         String token=CookieUtil.readLoginToken(request);

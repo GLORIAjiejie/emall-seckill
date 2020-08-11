@@ -11,6 +11,7 @@
 package com.cwu.emallseckill.controller;
 
 import com.cwu.emallseckill.bo.GoodsBo;
+import com.cwu.emallseckill.entity.User;
 import com.cwu.emallseckill.redis.RedisServer;
 import com.cwu.emallseckill.redis.UserKey;
 import com.cwu.emallseckill.result.CodeMsg;
@@ -20,11 +21,7 @@ import com.cwu.emallseckill.util.CookieUtil;
 import com.cwu.emallseckill.vo.GoodsDetailVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ObjectUtils;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
-import com.cwu.emallseckill.entity.User;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
@@ -51,7 +48,7 @@ public class GoodsController {
     /**
      * 获取秒杀商品列表
      */
-    @RequestMapping("/list")
+    @GetMapping("/list")
     @ResponseBody
     public Result<List<GoodsBo>> list() {
         List<GoodsBo> seckillGoodsList = this.seckillGoodsService.getSekillGoodsList();
