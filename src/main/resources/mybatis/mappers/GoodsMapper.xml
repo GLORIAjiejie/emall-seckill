@@ -2,159 +2,142 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.cwu.emallseckill.dao.GoodsMapper">
+    <!--基础信息结果集-->
     <resultMap id="baseResultMap" type="com.cwu.emallseckill.entity.Goods">
         <constructor>
-            <idArg column="id" jdbcType="BIGINT" javaType="java.lang.Long"/>
-            <arg column="goods_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
-            <arg column="goods_title" jdbcType="VARCHAR" javaType="java.lang.String"/>
-            <arg column="goods_img" jdbcType="VARCHAR" javaType="java.lang.String"/>
-            <arg column="goods_price" jdbcType="DECIMAL" javaType="java.math.BigDecimal"/>
-            <arg column="goods_stock" jdbcType="INTEGER" javaType="java.lang.Integer"/>
-            <arg column="create_date" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
-            <arg column="update_date" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+            <idArg column="id" jdbcType="BIGINT" javaType="java.lang.Long" />
+            <arg column="goods_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+            <arg column="goods_title" jdbcType="VARCHAR" javaType="java.lang.String" />
+            <arg column="goods_img" jdbcType="VARCHAR" javaType="java.lang.String" />
+            <arg column="goods_price" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+            <arg column="goods_stock" jdbcType="INTEGER" javaType="java.lang.Integer" />
+            <arg column="create_date" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+            <arg column="update_date" jdbcType="TIMESTAMP" javaType="java.util.Date" />
         </constructor>
     </resultMap>
-
-    <resultMap id="resultMapWithBLOGS" type="com.cwu.emallseckill.entity.Goods">
+    <!--详细信息结果集-->
+    <resultMap id="resultMapWithBLOBS" type="com.cwu.emallseckill.entity.Goods">
         <constructor>
-            <idArg column="id" jdbcType="BIGINT" javaType="java.lang.Long"/>
-            <arg column="goods_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
-            <arg column="goods_title" jdbcType="VARCHAR" javaType="java.lang.String"/>
-            <arg column="goods_img" jdbcType="VARCHAR" javaType="java.lang.String"/>
-            <arg column="goods_price" jdbcType="DECIMAL" javaType="java.math.BigDecimal"/>
-            <arg column="goods_stock" jdbcType="INTEGER" javaType="java.lang.Integer"/>
-            <arg column="create_date" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
-            <arg column="update_date" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
-            <arg column="goods_detail" jdbcType="LONGVARCHAR" javaType="java.lang.String"/>
+            <idArg column="id" jdbcType="BIGINT" javaType="java.lang.Long" />
+            <arg column="goods_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+            <arg column="goods_title" jdbcType="VARCHAR" javaType="java.lang.String" />
+            <arg column="goods_img" jdbcType="VARCHAR" javaType="java.lang.String" />
+            <arg column="goods_price" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+            <arg column="goods_stock" jdbcType="INTEGER" javaType="java.lang.Integer" />
+            <arg column="create_date" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+            <arg column="update_date" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+            <arg column="goods_detail" jdbcType="LONGVARCHAR" javaType="java.lang.String" />
         </constructor>
     </resultMap>
-
-    <resultMap id="resultMapWithSekillBase" type="com.cwu.emallseckill.bo.GoodsBo">
+    <!--秒杀结果集-->
+    <resultMap id="baseResultSeckillGoodsMap" type="com.cwu.emallseckill.bo.GoodsBo">
         <constructor>
-            <arg column="seckil_price" jdbcType="DECIMAL" javaType="java.math.BigDecimal"/>
+            <arg column="seckill_price" jdbcType="DECIMAL" javaType="java.math.BigDecimal"/>
             <arg column="stock_count" jdbcType="INTEGER" javaType="java.lang.Integer"/>
             <arg column="start_date" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
             <arg column="end_date" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
-            <arg column="id" jdbcType="BIGINT" javaType="java.lang.Long"/>
-            <arg column="goods_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
-            <arg column="goods_title" jdbcType="VARCHAR" javaType="java.lang.String"/>
-            <arg column="goods_img" jdbcType="VARCHAR" javaType="java.lang.String"/>
-            <arg column="goods_price" jdbcType="DECIMAL" javaType="java.math.BigDecimal"/>
-            <arg column="goods_stock" jdbcType="INTEGER" javaType="java.lang.Integer"/>
-            <arg column="create_date" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
-            <arg column="update_date" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
-            <arg column="goods_detail" jdbcType="LONGVARCHAR" javaType="java.lang.String"/>
+
+            <arg column="id" jdbcType="BIGINT" javaType="java.lang.Long" />
+            <arg column="goods_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+            <arg column="goods_title" jdbcType="VARCHAR" javaType="java.lang.String" />
+            <arg column="goods_img" jdbcType="VARCHAR" javaType="java.lang.String" />
+            <arg column="goods_price" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+            <arg column="goods_stock" jdbcType="INTEGER" javaType="java.lang.Integer" />
+            <arg column="create_date" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+            <arg column="update_date" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+            <arg column="goods_detail" jdbcType="LONGVARCHAR" javaType="java.lang.String" />
         </constructor>
     </resultMap>
 
-    <!-- seckill_goods表中的秒杀字段 -->
-    <sql id="base_column_sekill_base">
-        sg.seckil_price,sg.stock_count,sg.start_date,sg.end_date
-    </sql>
-
-    <!-- 商品的基础字段 -->
+    <!--商品的基础字段-->
     <sql id="base_column_list">
-        goods.id,goods.goods_name,goods.goods_title,goods.goods_img,goods.goods_price,goods.goods_stock,
-        goods.create_date,goods.update_date
+        goods.id, goods.goods_name, goods.goods_title, goods.goods_img, goods.goods_price,
+        goods.goods_stock, goods.create_date, goods.update_date
     </sql>
-
-    <!-- 商品的详细字段-->
+    <!--商品的详情字段-->
     <sql id="blob_column_list">
-         goods.id,goods.goods_name,goods.goods_title,goods.goods_img,
-         goods.goods_price,goods.goods_stock,goods.create_date,goods.update_date,
-         goods.goods_detail
+        goods.goods_detail
+    </sql>
+    <!--秒杀的字段seckill_goods表-->
+    <sql id="base_column_seckill_list">
+        sg.seckill_price, sg.stock_count, sg.start_date, sg.end_date
     </sql>
 
-    <!-- 添加-->
+    <!-- 添加 -->
     <insert id="insert" parameterType="com.cwu.emallseckill.entity.Goods">
-        INSERT INTO
-            goods(goods_name,goods_title,goods_img,goods_price,goods_stock,create_date,update_date,goods_detail)
-        VALUES(
-            #{goods.goods_name,jdbcType=VARCHAR},
-            #{goods.goods_title,jdbcType=VARCHAR},
-            #{goods.goods_img,jdbcType=VARCHAR},
-            #{goods.goods_price,jdbcType=DECIMAL},
-            #{goods.goods_stock,jdbcType=INTEGER},
-            #{goods.create_date,jdbcType=TIMESTAMP},
-            #{goods.update_date,jdbcType=TIMESTAMP},
-            #{goods.goods_detail,jdbcType=LONGVARCHAR}
-        )
+        INSERT INTO goods(goods_name, goods_title, goods_img, goods_price, goods_stock, create_date, update_date, goods_detail)
+        VALUES (#{goodsName, jdbcType=VARCHAR},
+                #{goodsTitle, jdbcType=VARCHAR},
+                #{goodsImg, jdbcType=VARCHAR},
+                #{goodsPrice, jdbcType=DECIMAL},
+                #{goodsStock, jdbcType=INTEGER},
+                #{createDate, jdbcType=TIMESTAMP},
+                #{updateDate, jdbcType=TIMESTAMP},
+                #{goodsDetail, jdbcType=LONGVARCHAR}
+                )
     </insert>
 
-    <!-- 根据主键id删除-->
+    <!-- 根据id删除商品 -->
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
         DELETE FROM goods
-        WHERE id =#{id,jdbcType=BIGINT}
+        WHERE id = #{id, jdbcType=BIGINT}
     </delete>
 
-    <!-- 根据主键id更新基本信息 -->
+    <!-- 根据id更新商品基本信息 -->
     <update id="updateByPrimaryKey" parameterType="com.cwu.emallseckill.entity.Goods">
         UPDATE goods
-        SET
-            goods_name = #{goods.goods_name,jdbcType=VARCHAR},
-            goods_title = #{goods.goods_title,jdbcType=VARCHAR},
-            goods_img = #{goods.goods_img,jdbcType=VARCHAR},
-            goods_price = #{goods.goods_price,jdbcType=DECIMAL},
-            goods_stock = #{goods.goods_stock,jdbcType=INTEGER},
-            create_date = #{goods.create_date,jdbcType=TIMESTAMP},
-            update_date = #{goods.update_date,jdbcType=TIMESTAMP}
-        WHERE id =#{goods.id,jdbcType=BIGINT}
+        SET goods_name = #{goodsName, jdbcType=VARCHAR},
+            goods_title = #{goodsTitle, jdbcType=VARCHAR},
+            goods_img = #{goodsImg, jdbcType=VARCHAR},
+            goods_price = #{goodsPrice, jdbcType=DECIMAL},
+            goods_stock = #{goodsStock, jdbcType=INTEGER},
+            update_date = #{updateDate, jdbcType=TIMESTAMP}
+        WHERE id = #{id, jdbcType=BIGINT}
     </update>
 
-    <!-- 根据主键id更新详细信息 -->
+    <!-- 根据id更新商品全部信息 -->
     <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.cwu.emallseckill.entity.Goods">
         UPDATE goods
-        SET
-            goods_name = #{goods.goods_name,jdbcType=VARCHAR},
-            goods_title = #{goods.goods_title,jdbcType=VARCHAR},
-            goods_img = #{goods.goods_img,jdbcType=VARCHAR},
-            goods_price = #{goods.goods_price,jdbcType=DECIMAL},
-            goods_stock = #{goods.goods_stock,jdbcType=INTEGER},
-            create_date = #{goods.create_date,jdbcType=TIMESTAMP},
-            update_date = #{goods.update_date,jdbcType=TIMESTAMP},
-            goods_detail = #{goods.goods_detail,jdbcType=LONGVARCHAR}
-        WHERE id =#{goods.id,jdbcType=BIGINT}
+        SET goods_name = #{goodsName, jdbcType=VARCHAR},
+            goods_title = #{goodsTitle, jdbcType=VARCHAR},
+            goods_img = #{goodsImg, jdbcType=VARCHAR},
+            goods_price = #{goodsPrice, jdbcType=DECIMAL},
+            goods_stock = #{goodsStock, jdbcType=INTEGER},
+            update_date = #{updateDate, jdbcType=TIMESTAMP},
+            goods_detail = #{goodsDetail, jdbcType=LONGVARCHAR}
+        WHERE id = #{id, jdbcType=BIGINT}
     </update>
 
-    <!-- 根据 id 查询 -->
-    <select id="selectByPrimaryKey" parameterType="com.cwu.emallseckill.entity.Goods" resultMap="resultMapWithBLOGS">
-        SELECT
-        <include refid="base_column_list"/>
-        ,
-        <include refid="blob_column_list"/>
+    <!--更新商品库存数量-->
+    <update id="updateStock" parameterType="java.lang.Long">
+        UPDATE seckill_goods
+        SET stock_count = stock_count - 1
+        WHERE goods_id = #{goodsId}
+    </update>
+    
+    <!-- 根据id查询商品全部信息 -->
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="resultMapWithBLOBS">
+        SELECT <include refid="base_column_list"/>, <include refid="blob_column_list"/>
         FROM goods
-        WHERE id =#{id,jdbcType=BIGINT}
+        WHERE id = #{id, jdbcType=BIGINT}
     </select>
 
-    <!-- 查询所有参与秒杀获得的商品 -->
-    <select id="selectAllGoods" parameterType="com.cwu.emallseckill.bo.GoodsBo" resultMap="resultMapWithSekillBase">
-        SELECT
-        <include refid="base_column_sekill_base"/>
-        ,
-        <include refid="base_column_list"/>
-        ,
-        <include refid="blob_column_list"/>
+    <!-- 查询所有商品的秒杀情况-->
+    <select id="selectAllGoods" resultMap="baseResultSeckillGoodsMap">
+        SELECT <include refid="base_column_seckill_list"/>,
+                <include refid="base_column_list"/>,
+                <include refid="blob_column_list"/>
         FROM goods
         LEFT JOIN seckill_goods sg ON sg.goods_id = goods.id
     </select>
 
-    <!-- 查询所有参与秒杀获得的商品 -->
-    <select id="getSeckillGoodsBoByGoodsId" parameterType="java.lang.Long" resultMap="resultMapWithSekillBase">
-        SELECT
-        <include refid="base_column_sekill_base"/>
-        ,
-        <include refid="blob_column_list"/>
-        ,
-        <include refid="base_column_list"/>
+    <!-- 查询秒杀商品详情 -->
+    <select id="getSeckillGoodsBoByGoodsId" parameterType="java.lang.Long" resultMap="baseResultSeckillGoodsMap">
+        SELECT <include refid="base_column_seckill_list"/>,
+                <include refid="base_column_list"/>,
+                <include refid="blob_column_list"/>
         FROM goods
         LEFT JOIN seckill_goods sg ON sg.goods_id = goods.id
         WHERE goods.id = #{goodsId}
     </select>
-
-    <update id="updateStock" parameterType="java.lang.Long">
-        UPDATE seckill_goods
-        SET
-            stock_count = stock_count -1
-        WHERE goods_Id = #{goodsId}
-    </update>
 </mapper>

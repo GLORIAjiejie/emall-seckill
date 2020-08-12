@@ -17,8 +17,7 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.filter.DelegatingFilterProxy;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.*;
 
 import javax.servlet.Filter;
 
@@ -39,7 +38,11 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(authorityInterceptor);
+        InterceptorRegistration addInterceptor=registry.addInterceptor(authorityInterceptor);
+
+        addInterceptor
+                .addPathPatterns("/**")
+                .excludePathPatterns("/static/**");
     }
 
     @Bean("myFilter")
@@ -54,5 +57,15 @@ public class WebConfig implements WebMvcConfigurer {
         registrationBean.setOrder(1);
         registrationBean.addUrlPatterns("/**");
         return registrationBean;
+    }
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/**").addResourceLocations("classpath:/static/");
+    }
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**");
     }
 }

@@ -13,7 +13,7 @@ package com.cwu.emallseckill.controller;
 import com.cwu.emallseckill.bo.GoodsBo;
 import com.cwu.emallseckill.entity.OrderInfo;
 import com.cwu.emallseckill.entity.User;
-import com.cwu.emallseckill.redis.RedisServer;
+import com.cwu.emallseckill.redis.RedisService;
 import com.cwu.emallseckill.redis.UserKey;
 import com.cwu.emallseckill.result.CodeMsg;
 import com.cwu.emallseckill.result.Result;
@@ -24,10 +24,7 @@ import com.cwu.emallseckill.vo.OrderDetailVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.util.ObjectUtils;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
@@ -45,8 +42,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/order")
 public class SeckillOrderController {
+
     @Autowired
-    private RedisServer redisServer;
+    private RedisService redisService;
 
     @Autowired
     private ISeckillOrderService seckillOrderService;
@@ -54,11 +52,13 @@ public class SeckillOrderController {
     @Autowired
     private ISeckillGoodsService seckillGoodsService;
 
-    @RequestMapping("/list")
+    @GetMapping("/list")
     @ResponseBody
     public Result<List<OrderDetailVo>> list(HttpServletRequest request) {
         String loginToken = CookieUtil.readLoginToken(request);
-        User user = (User) this.redisServer.get(UserKey.getByName, loginToken, User.class);
+        System.out.println("【LoginToken】" + loginToken);
+        User user = this.redisService.get(UserKey.getByName, loginToken, User.class);
+        System.out.println("【user】"+user.toString());
         if (ObjectUtils.isEmpty(user)) {
             return Result.error(CodeMsg.USER_NO_LOGIN);
         }
@@ -89,20 +89,20 @@ public class SeckillOrderController {
     @ResponseBody
     public Result<OrderDetailVo> orderDetailVoResult(Model model, @RequestParam("orderId") long orderId, HttpServletRequest request) {
         String loginToken = CookieUtil.readLoginToken(request);
-        User user = (User) this.redisServer.get(UserKey.getByName, loginToken, User.class);
+        User user = this.redisService.get(UserKey.getByName, loginToken, User.class);
         if (ObjectUtils.isEmpty(user)) {
             return Result.error(CodeMsg.USER_NO_LOGIN);
         }
 
         OrderInfo order = this.seckillOrderService.getOrderInfo(orderId);
-        if (ObjectUtils.isEmpty(order)){
+        if (ObjectUtils.isEmpty(order)) {
             return Result.error(CodeMsg.OREDER_NO_EXIST);
         }
-        long goodsId=order.getGoods_id();
+        long goodsId = order.getGoods_id();
         //System.out.println("[goodsId]"+goodsId);
-        GoodsBo goodsBo=this.seckillGoodsService.getSeckillGoodsBoByGoodsId(goodsId);
+        GoodsBo goodsBo = this.seckillGoodsService.getSeckillGoodsBoByGoodsId(goodsId);
         //System.out.println(goodsBo.toString());
-        OrderDetailVo vo =new OrderDetailVo();
+        OrderDetailVo vo = new OrderDetailVo();
         //日期转换
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         goodsBo.setCreateDateStr(formatter.format(goodsBo.getStartDate()));

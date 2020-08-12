@@ -17,7 +17,7 @@ import com.cwu.emallseckill.entity.OrderInfo;
 import com.cwu.emallseckill.entity.SeckillOrder;
 import com.cwu.emallseckill.entity.User;
 import com.cwu.emallseckill.redis.GoodsKey;
-import com.cwu.emallseckill.redis.RedisServer;
+import com.cwu.emallseckill.redis.RedisService;
 import com.cwu.emallseckill.redis.UserKey;
 import com.cwu.emallseckill.result.CodeMsg;
 import com.cwu.emallseckill.result.Result;
@@ -48,7 +48,7 @@ import java.util.Map;
 public class SeckillController implements InitializingBean {
 
     @Autowired
-    RedisServer redisServer;
+    RedisService redisService;
 
     @Autowired
     ISeckillGoodsService seckillGoodsService;
@@ -69,9 +69,9 @@ public class SeckillController implements InitializingBean {
         }
         for (GoodsBo goods : goodsBoList) {
             System.out.println(goods.toString());
-            this.redisServer.set(GoodsKey.getSeckillGoodsStock, "" + GoodsBo.getId(),
+            this.redisService.set(GoodsKey.getSeckillGoodsStock, "" + goods.getId(),
                     goods.getStockCount(), Const.RedisCacheExtime.GOODS_LIST);
-            localOverMap.put(GoodsBo.getId(), false);
+            localOverMap.put(goods.getId(), false);
         }
     }
 
@@ -85,7 +85,7 @@ public class SeckillController implements InitializingBean {
                                 @PathVariable("path") String path,
                                 HttpServletRequest request)  {
         String loginToken = CookieUtil.readLoginToken(request);
-        User user = (User) this.redisServer.get(UserKey.getByName, loginToken, User.class);
+        User user = this.redisService.get(UserKey.getByName, loginToken, User.class);
         if (ObjectUtils.isEmpty(user)) {
             return Result.error(CodeMsg.USER_NO_LOGIN);
         }
@@ -110,7 +110,7 @@ public class SeckillController implements InitializingBean {
         }
 
         //数量减少即库存减少
-        long stock = this.redisServer.desr(GoodsKey.getSeckillGoodsStock, "" + goodsId);
+        long stock = this.redisService.desr(GoodsKey.getSeckillGoodsStock, "" + goodsId);
         System.out.println("[stock]"+stock);
         if (stock < 0) {
             //商品已经秒杀完了
@@ -139,7 +139,7 @@ public class SeckillController implements InitializingBean {
     public Result<String> getSeckillPath(@RequestParam("goodsId")long goodsId,
                                          HttpServletRequest request){
         String loginToken=CookieUtil.readLoginToken(request);
-        User user= (User) this.redisServer.get(UserKey.getByName,loginToken,User.class);
+        User user= this.redisService.get(UserKey.getByName,loginToken,User.class);
         if (ObjectUtils.isEmpty(user)){
             return Result.error(CodeMsg.USER_NO_LOGIN);
         }
@@ -156,7 +156,7 @@ public class SeckillController implements InitializingBean {
     @ResponseBody
     public Result<Long> seckillResult(@RequestParam("goodsId")long goodsId,HttpServletRequest request){
         String loginToken = CookieUtil.readLoginToken(request);
-        User user= (User) this.redisServer.get(UserKey.getByName,loginToken,User.class);
+        User user= this.redisService.get(UserKey.getByName,loginToken,User.class);
         if (ObjectUtils.isEmpty(user)){
             return Result.error(CodeMsg.USER_NO_LOGIN);
         }

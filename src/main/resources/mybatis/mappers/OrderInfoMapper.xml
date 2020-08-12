@@ -2,122 +2,125 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.cwu.emallseckill.dao.OrderInfoMapper">
+    <!--基础信息结果集-->
     <resultMap id="baseResultMap" type="com.cwu.emallseckill.entity.OrderInfo">
         <constructor>
             <idArg column="id" jdbcType="BIGINT" javaType="java.lang.Long"/>
             <arg column="user_id" jdbcType="BIGINT" javaType="java.lang.Long"/>
             <arg column="goods_id" jdbcType="BIGINT" javaType="java.lang.Long"/>
             <arg column="addr_id" jdbcType="BIGINT" javaType="java.lang.Long"/>
-            <arg column="goods_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
-            <arg column="goods_count" jdbcType="INTEGER" javaType="java.lang.Integer"/>
-            <arg column="goods_price" jdbcType="DECIMAL" javaType="java.math.BigDecimal"/>
-            <arg column="order_channel" jdbcType="INTEGER" javaType="java.lang.Integer"/>
-            <arg column="status" jdbcType="INTEGER" javaType="java.lang.Integer"/>
-            <arg column="create_date" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
-            <arg column="pay_date" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+
+            <arg column="goods_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+            <arg column="goods_count" jdbcType="INTEGER" javaType="java.lang.Integer" />
+            <arg column="goods_price" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+            <arg column="order_channel" jdbcType="INTEGER" javaType="java.lang.Integer" />
+            <arg column="status" jdbcType="INTEGER" javaType="java.lang.Integer" />
+            <arg column="create_date" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+            <arg column="pay_date" jdbcType="TIMESTAMP" javaType="java.util.Date" />
         </constructor>
     </resultMap>
 
     <sql id="base_column_list">
-        id,user_id,goods_id,addr_id,goods_name,goods_count,goods_price,order_channel,status,create_date,pay_date
+        id, user_id, goods_id, addr_id, goods_name, goods_count, goods_price,
+        order_channel, status, create_date, pay_date
     </sql>
 
-    <insert id="insert">
-        INSERT INTO
-            order_info(user_id,goods_id,addr_id,goods_name,goods_count,goods_price,order_channel,status,create_date,pay_date)
-        VALUES(
-            #{record.user_id,jdbcType=BIGINT},
-            #{record.goods_id,jdbcType=BIGINT},
-            #{record.addr_id,jdbcType=BIGINT},
-            #{record.goods_name,jdbcType=VARCHAR},
-            #{record.goods_count,jdbcType=INTEGER},
-            #{record.goods_price,jdbcType=DECIMAL},
-            #{record.order_channel,jdbcType=INTEGER},
-            #{record.status,jdbcType=INTEGER},
-            #{record.create_date,jdbcType=TIMESTAMP},
-            #{record.pay_date,jdbcType=TIMESTAMP}
-        )
+    <!-- 添加订单信息:普通订单 -->
+    <insert id="insert" parameterType="com.cwu.emallseckill.entity.OrderInfo">
+        INSERT INTO order_info(<include refid="base_column_list"/>)
+        VALUES (null,
+            #{record.userId, jdbcType=BIGINT},
+            #{record.goodsId, jdbcType=BIGINT},
+            #{record.addrId, jdbcType=BIGINT},
+            #{record.goodsName, jdbcType=VARCHAR},
+            #{record.goodsCount, jdbcType=INTEGER},
+            #{record.goodsPrice, jdbcType=DECIMAL},
+            #{record.orderChannel, jdbcType=INTEGER},
+            #{record.status, jdbcType=INTEGER},
+            #{record.createDate, jdbcType=TIMESTAMP},
+            #{record.payDate, jdbcType=TIMESTAMP}
+            )
     </insert>
 
-    <insert id="insertSelective" parameterType="com.cwu.emallseckill.entity.OrderInfo" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO
-            order_info
+    <!--添加订单信息：秒杀订单-->
+    <insert id="insertSeletive" parameterType="com.cwu.emallseckill.entity.OrderInfo" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO order_info
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test=" id !=null">
+            <if test="id != null">
                 id,
             </if>
-            <if test=" userId !=null">
+            <if test="userId != null">
                 user_id,
             </if>
-            <if test=" goodsId !=null">
+            <if test="goodsId != null">
                 goods_id,
             </if>
-            <if test=" addrId !=null">
+            <if test="addrId != null">
                 addr_id,
             </if>
-            <if test=" goodsName !=null">
+            <if test="goodsName != null">
                 goods_name,
             </if>
-            <if test=" goodsCount !=null">
+            <if test="goodsCount != null">
                 goods_count,
             </if>
-            <if test=" goodsPrice !=null">
+            <if test="goodsPrice != null">
                 goods_price,
             </if>
-            <if test=" orderChannel !=null">
+            <if test="orderChannel != null">
                 order_channel,
             </if>
-            <if test=" status !=null">
+            <if test="status != null">
                 status,
             </if>
-            <if test=" createDate !=null">
+            <if test="createDate != null">
                 create_date,
             </if>
-            <if test=" payDate !=null">
+            <if test="payDate != null">
                 pay_date,
             </if>
         </trim>
         <trim prefix=" VALUES(" suffix=")" suffixOverrides=",">
-            <if test=" id !=null">
-                #{orderInfo.id,jdbcType=BIGINT},
+            <if test="id != null">
+                #{orderInfo.id, jdbcType=BIGINT},
             </if>
-            <if test=" userId !=null">
-                #{orderInfo.user_id,jdbcType=BIGINT},
+            <if test="userId != null">
+                #{orderInfo.userId, jdbcType=BIGINT},
             </if>
-            <if test=" goodsId !=null">
-                #{orderInfo.goods_id,jdbcType=BIGINT},
+            <if test="goodsId != null">
+                #{orderInfo.goodsId, jdbcType=BIGINT},
             </if>
-            <if test=" addrId !=null">
-                #{orderInfo.addr_id,jdbcType=BIGINT},
+            <if test="addrId != null">
+                #{orderInfo.addrId, jdbcType=BIGINT},
             </if>
-            <if test=" goodsName !=null">
-                #{orderInfo.goods_name,jdbcType=VARCHAR},
+            <if test="goodsName != null">
+                #{orderInfo.goodsName, jdbcType=VARCHAR},
             </if>
-            <if test=" goodsCount !=null">
-                #{orderInfo.goods_count,jdbcType=INTEGER},
+            <if test="goodsCount != null">
+                #{goodsCount, jdbcType=INTEGER},
             </if>
-            <if test=" goodsPrice !=null">
-                #{orderInfo.goods_price,jdbcType=DECIMAL}
+            <if test="goodsPrice != null">
+                #{goodsPrice, jdbcType=DECIMAL},
             </if>
-            <if test=" orderChannel !=null">
-                #{orderInfo.order_channel,jdbcType=INTEGER},
+            <if test="orderChannel != null">
+                #{orderChannel, jdbcType=INTEGER},
             </if>
-            <if test=" status !=null">
-                #{orderInfo.status,jdbcType=INTEGER},
+            <if test="status != null">
+                #{status, jdbcType=INTEGER},
             </if>
-            <if test=" createDate !=null">
-                #{orderInfo.create_date,jdbcType=TIMESTAMP},
+            <if test="createDate != null">
+                #{createDate, jdbcType=TIMESTAMP},
             </if>
-            <if test=" payDate !=null">
-                #{orderInfo.pay_date,jdbcType=TIMESTAMP},
+            <if test="payDate != null">
+                #{payDate, jdbcType=TIMESTAMP},
             </if>
         </trim>
     </insert>
 
-    <select id="selectByPrimaryKey" parameterType="com.cwu.emallseckill.entity.OrderInfo" resultMap="baseResultMap">
-        SELECT
-            <include refid="base_column_list"/>
+    <!--查询订单信息-->
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="baseResultMap">
+        SELECT <include refid="base_column_list"/>
         FROM order_info
-        WHERE id = #{id,jdbcType=BIGINT}
+        WHERE id = #{id, jdbcType=BIGINT}
     </select>
 </mapper>

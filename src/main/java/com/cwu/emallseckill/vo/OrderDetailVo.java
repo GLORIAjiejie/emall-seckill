@@ -25,8 +25,6 @@ public class OrderDetailVo {
     private GoodsBo goods;
     private OrderInfo order;
 
-
-
     public OrderInfo getOrder() {
         return order;
     }

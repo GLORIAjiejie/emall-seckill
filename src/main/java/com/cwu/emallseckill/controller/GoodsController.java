@@ -12,7 +12,7 @@ package com.cwu.emallseckill.controller;
 
 import com.cwu.emallseckill.bo.GoodsBo;
 import com.cwu.emallseckill.entity.User;
-import com.cwu.emallseckill.redis.RedisServer;
+import com.cwu.emallseckill.redis.RedisService;
 import com.cwu.emallseckill.redis.UserKey;
 import com.cwu.emallseckill.result.CodeMsg;
 import com.cwu.emallseckill.result.Result;
@@ -28,9 +28,10 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
- * 〈一句话功能简述〉<br>
- * 〈〉
- *
+*   高并发：测试使用Postman
+*   数据同步：Redis --> 将key放入redis，使用redis获取
+*   限流访问：拦截器，配置到WebConfig里
+*
  * @author min
  * @create 2020-07-31
  * @since 1.0.0
@@ -43,7 +44,7 @@ public class GoodsController {
     private ISeckillGoodsService seckillGoodsService;
 
     @Autowired
-    private RedisServer redisServer;
+    private RedisService redisService;
 
     /**
      * 获取秒杀商品列表
@@ -62,7 +63,7 @@ public class GoodsController {
     @ResponseBody
     public Result<GoodsDetailVo> goodsDetail(@PathVariable("goodsId") long goodsId, HttpServletRequest request) {
         String loginToken = CookieUtil.readLoginToken(request);
-        User user = (User) this.redisServer.get(UserKey.getByName, loginToken, User.class);
+        User user = this.redisService.get(UserKey.getByName, loginToken, User.class);
         GoodsBo goods = this.seckillGoodsService.getSeckillGoodsBoByGoodsId(goodsId);
         if (ObjectUtils.isEmpty(goods)) {
             return Result.error(CodeMsg.NO_GOODS);

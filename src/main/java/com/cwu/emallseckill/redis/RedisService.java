@@ -25,7 +25,7 @@ import redis.clients.jedis.JedisPool;
  * @since 1.0.0
  */
 @Service
-public class RedisServer {
+public class RedisService {
 
     @Autowired
     private JedisPool jedisPool;
@@ -33,13 +33,14 @@ public class RedisServer {
     /* *
      *  获取当个对象
      * */
-    public <T> Object get(KeyPrefix prefix, String key, Class<T> clazz) {
+    public <T> T get(KeyPrefix prefix, String key, Class<T> clazz) {
         Jedis jedis = null;
         try {
             jedis = jedisPool.getResource();
-            //生成真正的key
+            //生成真正的key className+":";Basefix:id1
             String realkey = prefix.getPrefix() + key;
             String str = jedis.get(realkey);
+            //将String转换成Bean后传出
             T t = stringToBean(str, clazz);
             return t;
         } finally {
@@ -117,7 +118,7 @@ public class RedisServer {
         }
 
         if (clazz == int.class || clazz == Integer.class) {
-            return (T) Integer.valueOf(data);
+            return ((T) Integer.valueOf(data));
         } else if (clazz == String.class) {
             return (T) data;
         } else if (clazz == long.class || clazz == Long.class) {

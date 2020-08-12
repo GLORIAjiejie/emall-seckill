@@ -13,7 +13,7 @@ package com.cwu.emallseckill.controller;
 import com.cwu.emallseckill.consts.Const;
 import com.cwu.emallseckill.entity.User;
 import com.cwu.emallseckill.param.LoginParam;
-import com.cwu.emallseckill.redis.RedisServer;
+import com.cwu.emallseckill.redis.RedisService;
 import com.cwu.emallseckill.redis.UserKey;
 import com.cwu.emallseckill.result.Result;
 import com.cwu.emallseckill.service.IUserService;
@@ -37,7 +37,7 @@ import javax.servlet.http.HttpServletResponse;
 public class LoginController {
 
     @Autowired
-    private RedisServer redisServer;
+    private RedisService redisService;
 
     @Autowired
     private IUserService userService;
@@ -49,9 +49,11 @@ public class LoginController {
         loginParam.setMobile(user.getUserName());
         loginParam.setPassword(user.getPassword());
         Result<User> login=this.userService.login(loginParam);
+        System.out.println("【request.getSession()】"+request.getSession());
+        System.out.println("【login.getData()】"+login.getData());
         if (login.isSuccess()){
-            CookieUtil.writenLoginToken(response,request.getSession().getId());
-            this.redisServer.set(UserKey.getByName,request.getSession().getId(),login.getData(),
+            CookieUtil.writeLoginToken(response,request.getSession().getId());
+            this.redisService.set(UserKey.getByName,request.getSession().getId(),login.getData(),
                     Const.RedisCacheExtime.REDIS_SESSION_EXTIME);
         }
         return login;
@@ -62,7 +64,9 @@ public class LoginController {
     public String logout(HttpServletRequest request,HttpServletResponse response){
         String token=CookieUtil.readLoginToken(request);
         CookieUtil.delLoginToken(request,response);
-        this.redisServer.del(UserKey.getByName,token);
+        System.out.println("[token]"+request.getSession().getId());
+        token=request.getSession().getId();
+        this.redisService.del(UserKey.getByName,token);
         return "login";
     }
 }

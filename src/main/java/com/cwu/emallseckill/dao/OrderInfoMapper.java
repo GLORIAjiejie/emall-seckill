@@ -13,6 +13,7 @@ public interface OrderInfoMapper {
 
     OrderInfo selectByPrimaryKey(@Param("id") long id);
 
+
     /**添加秒杀订单信息*/
-    int insertSelective(@Param("orderInfo") OrderInfo orderInfo);
+    int insertSeletive(@Param("orderInfo") OrderInfo orderInfo);
 }

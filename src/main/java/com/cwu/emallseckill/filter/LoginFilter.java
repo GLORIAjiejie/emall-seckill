@@ -12,7 +12,7 @@ package com.cwu.emallseckill.filter;
 
 import com.cwu.emallseckill.consts.Const;
 import com.cwu.emallseckill.entity.User;
-import com.cwu.emallseckill.redis.RedisServer;
+import com.cwu.emallseckill.redis.RedisService;
 import com.cwu.emallseckill.redis.UserKey;
 import com.cwu.emallseckill.util.CookieUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -38,7 +38,7 @@ import java.io.IOException;
 public class LoginFilter implements Filter {
 
     @Autowired
-    private RedisServer redisServer;
+    private RedisService redisService;
 
     //初始化
     @Override
@@ -49,21 +49,17 @@ public class LoginFilter implements Filter {
     //过滤
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        HttpServletRequest request= (HttpServletRequest) servletRequest;
-        HttpServletResponse response= (HttpServletResponse) servletResponse;
-
-        String loginToken= CookieUtil.readLoginToken(request);
-
-        if (StringUtils.isEmpty(loginToken)){
-            User user= (User) redisServer.get(UserKey.getByName,loginToken, User.class);
-            if (!ObjectUtils.isEmpty(user)){
-                //如果user不为空，充值session时间，调用expire命令
-                this.redisServer.expice(UserKey.getByName,loginToken, Const.RedisCacheExtime.REDIS_SESSION_EXTIME);
+        HttpServletRequest request = (HttpServletRequest) servletRequest;
+        HttpServletResponse response = (HttpServletResponse) servletResponse;
+        String loginToken = CookieUtil.readLoginToken(request);
+        if (StringUtils.isNotEmpty(loginToken)) {
+            User user = this.redisService.get(UserKey.getByName, loginToken, User.class);
+            if (!ObjectUtils.isEmpty(user)) {
+                // 如果user不为空，则设置session时间及调用expire命令
+                this.redisService.expice(UserKey.getByName, loginToken, Const.RedisCacheExtime.REDIS_SESSION_EXTIME);
             }
-
-            //过滤器处理
-            filterChain.doFilter(request,response);
         }
+        filterChain.doFilter(request, response);
     }
 
     @Override

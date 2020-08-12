@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.cwu.emallseckill.annotations.AccessLimit;
 import com.cwu.emallseckill.entity.User;
 import com.cwu.emallseckill.redis.AccessKey;
-import com.cwu.emallseckill.redis.RedisServer;
+import com.cwu.emallseckill.redis.RedisService;
 import com.cwu.emallseckill.redis.UserKey;
 import com.cwu.emallseckill.result.CodeMsg;
 import com.cwu.emallseckill.result.Result;
@@ -18,7 +18,6 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.resource.ResourceHttpRequestHandler;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,19 +27,13 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Map;
 
-
 /**
- * 〈使用拦截器统一校验用户权限〉<br>
- * 〈〉
- *
- * @author min
- * @create 2020-08-10
- * @since 1.0.0
+ * 使用拦截器统一校验用户权限
  */
 @Component
 public class AuthorityInterceptor implements HandlerInterceptor {
     @Autowired
-    private RedisServer redisService;
+    private RedisService redisService;
 
     private Logger logger = LoggerFactory.getLogger(AuthorityInterceptor.class);
 
@@ -93,7 +86,7 @@ public class AuthorityInterceptor implements HandlerInterceptor {
             User user = null;
             String loginToken = CookieUtil.readLoginToken(request);
             if (StringUtils.isNotEmpty(loginToken)) {
-                user = (User) this.redisService.get(UserKey.getByName, loginToken, User.class);
+                user = this.redisService.get(UserKey.getByName, loginToken, User.class);
             }
 
             if (needLogin) {
@@ -105,7 +98,7 @@ public class AuthorityInterceptor implements HandlerInterceptor {
             }
 
             AccessKey accessKey = AccessKey.withExpire;
-            Integer count = (Integer) this.redisService.get(accessKey, key, Integer.class);
+            Integer count = this.redisService.get(accessKey, key, Integer.class);
             if (ObjectUtils.isEmpty(count)) {
                 this.redisService.set(accessKey, key, 1, seconds);
             } else if (count < maxCount) {
@@ -114,8 +107,6 @@ public class AuthorityInterceptor implements HandlerInterceptor {
                 render(response, CodeMsg.ACCESS_LIMIT_REACHED);
                 return false;
             }
-        } else if(handler instanceof ResourceHttpRequestHandler) {
-            return true;
         }
 
         return true;
@@ -140,4 +131,3 @@ public class AuthorityInterceptor implements HandlerInterceptor {
 
     }
 }
-

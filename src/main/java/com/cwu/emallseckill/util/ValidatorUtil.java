@@ -9,8 +9,7 @@
  * 作者姓名           修改时间           版本号              描述
  */
 package com.cwu.emallseckill.util;
-
-import com.alibaba.druid.util.StringUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
