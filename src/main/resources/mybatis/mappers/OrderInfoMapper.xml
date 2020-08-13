@@ -29,16 +29,16 @@
     <insert id="insert" parameterType="com.cwu.emallseckill.entity.OrderInfo">
         INSERT INTO order_info(<include refid="base_column_list"/>)
         VALUES (null,
-            #{record.userId, jdbcType=BIGINT},
-            #{record.goodsId, jdbcType=BIGINT},
-            #{record.addrId, jdbcType=BIGINT},
-            #{record.goodsName, jdbcType=VARCHAR},
-            #{record.goodsCount, jdbcType=INTEGER},
-            #{record.goodsPrice, jdbcType=DECIMAL},
-            #{record.orderChannel, jdbcType=INTEGER},
+            #{record.user_id, jdbcType=BIGINT},
+            #{record.goods_id, jdbcType=BIGINT},
+            #{record.addr_id, jdbcType=BIGINT},
+            #{record.goods_name, jdbcType=VARCHAR},
+            #{record.goods_count, jdbcType=INTEGER},
+            #{record.goods_price, jdbcType=DECIMAL},
+            #{record.order_channel, jdbcType=INTEGER},
             #{record.status, jdbcType=INTEGER},
-            #{record.createDate, jdbcType=TIMESTAMP},
-            #{record.payDate, jdbcType=TIMESTAMP}
+            #{record.create_date, jdbcType=TIMESTAMP},
+            #{record.pay_date, jdbcType=TIMESTAMP}
             )
     </insert>
 
@@ -49,70 +49,70 @@
             <if test="id != null">
                 id,
             </if>
-            <if test="userId != null">
+            <if test="user_id != null">
                 user_id,
             </if>
-            <if test="goodsId != null">
+            <if test="goods_id != null">
                 goods_id,
             </if>
-            <if test="addrId != null">
+            <if test="addr_id != null">
                 addr_id,
             </if>
-            <if test="goodsName != null">
+            <if test="goods_name != null">
                 goods_name,
             </if>
-            <if test="goodsCount != null">
+            <if test="goods_count != null">
                 goods_count,
             </if>
-            <if test="goodsPrice != null">
+            <if test="goods_price != null">
                 goods_price,
             </if>
-            <if test="orderChannel != null">
+            <if test="order_channel != null">
                 order_channel,
             </if>
             <if test="status != null">
                 status,
             </if>
-            <if test="createDate != null">
+            <if test="create_date != null">
                 create_date,
             </if>
-            <if test="payDate != null">
+            <if test="pay_date != null">
                 pay_date,
             </if>
         </trim>
         <trim prefix=" VALUES(" suffix=")" suffixOverrides=",">
             <if test="id != null">
-                #{orderInfo.id, jdbcType=BIGINT},
+                #{id, jdbcType=BIGINT},
             </if>
-            <if test="userId != null">
-                #{orderInfo.userId, jdbcType=BIGINT},
+            <if test="user_id != null">
+                #{user_id, jdbcType=BIGINT},
             </if>
-            <if test="goodsId != null">
-                #{orderInfo.goodsId, jdbcType=BIGINT},
+            <if test="goods_id != null">
+                #{goods_id,jdbcType=BIGINT},
             </if>
-            <if test="addrId != null">
-                #{orderInfo.addrId, jdbcType=BIGINT},
+            <if test="addr_id != null">
+                #{addr_id, jdbcType=BIGINT},
             </if>
-            <if test="goodsName != null">
-                #{orderInfo.goodsName, jdbcType=VARCHAR},
+            <if test="goods_name != null">
+                #{goods_name, jdbcType=VARCHAR},
             </if>
-            <if test="goodsCount != null">
-                #{goodsCount, jdbcType=INTEGER},
+            <if test="goods_count != null">
+                #{goods_count, jdbcType=INTEGER},
             </if>
-            <if test="goodsPrice != null">
-                #{goodsPrice, jdbcType=DECIMAL},
+            <if test="goods_price != null">
+                #{goods_price, jdbcType=DECIMAL},
             </if>
-            <if test="orderChannel != null">
-                #{orderChannel, jdbcType=INTEGER},
+            <if test="order_channel != null">
+                #{order_channel, jdbcType=INTEGER},
             </if>
             <if test="status != null">
                 #{status, jdbcType=INTEGER},
             </if>
-            <if test="createDate != null">
-                #{createDate, jdbcType=TIMESTAMP},
+            <if test="create_date != null">
+                #{create_date, jdbcType=TIMESTAMP},
             </if>
-            <if test="payDate != null">
-                #{payDate, jdbcType=TIMESTAMP},
+            <if test="pay_date != null">
+                #{pay_date, jdbcType=TIMESTAMP},
             </if>
         </trim>
     </insert>

@@ -56,28 +56,27 @@ public class SeckillOrderController {
     @ResponseBody
     public Result<List<OrderDetailVo>> list(HttpServletRequest request) {
         String loginToken = CookieUtil.readLoginToken(request);
-        System.out.println("【LoginToken】" + loginToken);
         User user = this.redisService.get(UserKey.getByName, loginToken, User.class);
-        System.out.println("【user】"+user.toString());
         if (ObjectUtils.isEmpty(user)) {
             return Result.error(CodeMsg.USER_NO_LOGIN);
         }
 
-        List<OrderInfo> orderInfo = this.seckillOrderService.getOrderList(user);
-        if (ObjectUtils.isEmpty(orderInfo)) {
+        List<OrderInfo> orderList = this.seckillOrderService.getOrderList(user);
+        if (ObjectUtils.isEmpty(orderList)) {
             return Result.error(CodeMsg.OREDER_NO_EXIST);
         }
 
         List<OrderDetailVo> orderDetailVoList = new ArrayList<>();
-        for (OrderInfo order : orderInfo) {
-            long goodsId = order.getGoods_id();
+        for (OrderInfo orderInfo : orderList) {
+//            System.out.println("【order】"+order.toString());
+            long goodsId = orderInfo.getGoods_id();
             GoodsBo goodsBo = this.seckillGoodsService.getSeckillGoodsBoByGoodsId(goodsId);
             OrderDetailVo vo = new OrderDetailVo();
             //获取日期格式器
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            String format_1 = format.format(order.getCreate_date());
+            String format_1 = format.format(orderInfo.getCreate_date());
             goodsBo.setCreateDateStr(format_1);
-            vo.setOrder(order);
+            vo.setOrder(orderInfo);
             vo.setGoods(goodsBo);
 
             orderDetailVoList.add(vo);
@@ -88,6 +87,7 @@ public class SeckillOrderController {
     @RequestMapping("/detail")
     @ResponseBody
     public Result<OrderDetailVo> orderDetailVoResult(Model model, @RequestParam("orderId") long orderId, HttpServletRequest request) {
+        System.out.println("【orderId】"+orderId);
         String loginToken = CookieUtil.readLoginToken(request);
         User user = this.redisService.get(UserKey.getByName, loginToken, User.class);
         if (ObjectUtils.isEmpty(user)) {
@@ -95,6 +95,7 @@ public class SeckillOrderController {
         }
 
         OrderInfo order = this.seckillOrderService.getOrderInfo(orderId);
+        System.out.println(order.toString());
         if (ObjectUtils.isEmpty(order)) {
             return Result.error(CodeMsg.OREDER_NO_EXIST);
         }

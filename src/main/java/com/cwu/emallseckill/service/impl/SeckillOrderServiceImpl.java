@@ -86,15 +86,15 @@ public class SeckillOrderServiceImpl implements ISeckillOrderService {
             orderInfo.setGoods_count(1);
             orderInfo.setGoods_id(goodsBo.getId());
             orderInfo.setGoods_name(goodsBo.getGoodsName());
-            orderInfo.setGoods_price(goodsBo.getSeckilPrice());
+            orderInfo.setGoods_price(goodsBo.getGoodsPrice());
             orderInfo.setOrder_channel(1);
             orderInfo.setStatus(0);
-            orderInfo.setUser_id((long) user.getId());
-            //添加信息到订单
-            long orderId=this.orderInfoMapper.insert(orderInfo);
+            orderInfo.setUser_id((long)user.getId());
+            // 添加信息到秒杀订单order_info
+            long orderId = this.orderInfoMapper.insertSeletive(orderInfo);
             SeckillOrder seckillOrder = new SeckillOrder();
             seckillOrder.setGoodsId(goodsBo.getId());
-            seckillOrder.setOrderId(orderId);
+            seckillOrder.setOrderId(orderInfo.getId());
             seckillOrder.setUserId((long) user.getId());
             //秒杀中添加数据
             this.seckillOrderMapper.insertSelective(seckillOrder);
@@ -134,6 +134,7 @@ public class SeckillOrderServiceImpl implements ISeckillOrderService {
         }
     }
 
+    /*查询订单列表*/
     @Override
     public List<OrderInfo> getOrderList(User user) {
         //根据用户id查询
@@ -146,7 +147,9 @@ public class SeckillOrderServiceImpl implements ISeckillOrderService {
 
         List<OrderInfo> orderInfos = new ArrayList<>();
         for (SeckillOrder seckillOrder : seckillOrders) {
-            OrderInfo orderInfo = this.orderInfoMapper.selectByPrimaryKey(seckillOrder.getId());
+            System.out.println("【seckillOrder】"+seckillOrder.toString());
+            OrderInfo orderInfo = this.orderInfoMapper.selectByPrimaryKey(seckillOrder.getOrderId());
+            System.out.println("【orderInfo】"+orderInfo.toString());
             orderInfos.add(orderInfo);
         }
         return orderInfos;
@@ -154,7 +157,7 @@ public class SeckillOrderServiceImpl implements ISeckillOrderService {
 
     @Override
     public OrderInfo getOrderInfo(long orderId) {
-        SeckillOrder seckillOrder=this.seckillOrderMapper.selectByPrimaryKey(orderId);
+        SeckillOrder seckillOrder=this.seckillOrderMapper.selectByOrderId(orderId);
         if (ObjectUtils.isEmpty(seckillOrder)){
             return null;
         }
