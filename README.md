@@ -33,18 +33,19 @@ grammar_align: true
 grammar_tableExtra: true
 --- 
 
-[toc!?theme=gray&depth=4]
-
-
 # 1. Seckill 电商购物秒杀系统介绍
 
 ## 1.1 涉及到的知识
 - VUE全家桶(前端开发)
 - SpringBoot、Spring、SpringMVC、Mybatis 后台开发
 - MySQL、Redis
+- 单元测试
 
 ## 1.2 当前进度
-- 功能：登录页、登陆功能
+- 功能：
+ 1. 登录页、登陆功能
+ 2. 秒杀商品页面显示与查看
+ 3. 订单商品页面显示与查看
 
 # 2.功能实现部分
 ## 2.1 登陆部分
